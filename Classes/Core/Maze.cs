@@ -1,0 +1,174 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Text;
+using System.Threading.Tasks;
+using Maze_Mania.Interfaces;
+
+namespace Maze_Mania.Classes.Core;
+
+public class Maze
+{
+    public char[,] board { get; }
+    public  List<IItem>[,] ItemBoard { get; private set; }
+    public Player _player;
+    public int X { get; private set; }
+    public int Y { get; private set; }
+
+    public Maze(Player player, int X = 40, int Y = 20)
+    {
+        board = new char[Y, X];
+        ItemBoard = new List<IItem>[Y, X];
+        
+        for(int i  = 0; i < Y; i++)
+        {
+            for(int j = 0; j < X; j++)
+            {
+                ItemBoard[i, j] = new List<IItem>();
+            }
+        }
+
+        for (int i = 0; i < Y; i++)
+        {
+            for (int j = 0; j < X; j++)
+            {
+                board[i, j] = ' ';
+            }
+        }
+
+        for (int i = 0; i < X; i++)
+        {
+            board[Y - 1, i] = '█';
+            board[0, i] = '█';
+        }
+
+        for (int i = 1; i < Y; i++)
+        {
+            board[i, 0] = '█';
+            board[i, X - 1] = '█';
+        }
+
+        _player = player;
+    }
+
+    public void PickUp()
+    {
+        int x = _player.xPos;
+        int y = _player.yPos;
+        
+        if (ItemBoard[y, x].Count == 0) { return; }
+        _player.pickUpItem(retrieveItem(y, x));
+    }
+
+    public void MoveLeft()
+    {
+        int x = _player.xPos;
+        int y = _player.yPos;
+        if (isAccesible(y, x - 1))
+            _player.setPos(x - 1, y);
+    }
+
+    public void MoveRight()
+    {
+        int x = _player.xPos;
+        int y = _player.yPos;
+        if (isAccesible(y, x + 1))
+            _player.setPos(x + 1, y);
+    }
+
+    public void MoveUp()
+    {
+        int x = _player.xPos;
+        int y = _player.yPos;
+        if (isAccesible(y - 1, x))
+            _player.setPos(x, y - 1);
+    }
+
+    public void MoveDown()
+    {
+        int x = _player.xPos;
+        int y = _player.yPos;
+        if (isAccesible(y + 1, x))
+            _player.setPos(x, y + 1);
+    }
+
+    private bool isAccesible(int y, int x)
+    {
+        bool a = x >= 0;
+        bool b = y >= 0;
+        bool c = x < board.GetLength(1);
+        bool e = y < board.GetLength(0);
+        bool d = board[y, x] != '█';
+
+        return x >= 0 && y >= 0 && y < board.GetLength(0) && x < board.GetLength(1) && board[y, x] != '█';
+    }
+
+    public int addItem(IItem item, int y, int x)
+    {
+        if (!isAccesible(y, x))
+        {
+            return 0;
+        }
+        if (board[y, x] == ' ')
+            board[y, x] = item.Symbol;
+        ItemBoard[y, x].Add(item);
+        return 1;
+    }
+
+    public IItem? retrieveItem(int y, int x)
+    {
+        if (!isAccesible(y, x))
+        {
+            return null;
+        }
+        board[y, x] = ' ';
+        IItem item = ItemBoard[y, x].First();
+        ItemBoard[y, x].RemoveAt(0);
+        if(ItemBoard[y, x].Count() > 0)
+        {
+            board[y, x] = ItemBoard[y, x].First().Symbol;
+        }
+        return item;
+    }
+
+    public char getChar(int x, int y)
+    {
+        if (ItemBoard[y, x] == null) return board[y, x];
+        return ItemBoard[y, x].First().Symbol;
+    }
+
+    public bool PlayerDrops(char c, int index)
+    {
+        switch (c)
+        {
+            case 'g':
+            case 'c':
+                return PlayerDropsCurrency(c);
+            default:
+                return PlayerDropsItem(index);
+        }
+    }
+
+    private bool PlayerDropsCurrency(char c)
+    {
+        IItem? item = _player.dropCurrency(c);
+        if (item == null)
+        {
+            return false;
+        }
+        addItem(item, _player.yPos, _player.xPos);
+        return true;
+    }
+
+    private bool PlayerDropsItem(int index)
+    {
+        IItem? item = _player.dropItem(index);
+        if (item == null)
+        {
+            return false;
+        }
+        addItem(item, _player.yPos, _player.xPos);
+        return true;
+    }
+}
