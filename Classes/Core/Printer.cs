@@ -69,17 +69,6 @@ public static class Printer
 
     }
 
-    private static string PadCentre(string st, int len)
-    {
-        StringBuilder sb = new StringBuilder();
-        int side = (len - st.Length)/2;
-        if(side < 0) { return st.Substring(0, len); }
-        sb.Append(st.PadLeft(side + st.Length));
-        side = Math.Max(0, len - (side + st.Length));
-        sb.Append("".PadRight(side));
-        return sb.ToString();
-    }
-
     private static List<string> MakeLines(List<string> strings, int width)
     {
         var lines = new List<string>();
@@ -122,7 +111,7 @@ public static class Printer
     private static List<string> MakeLeftPannel(List<string> Interactions, List<Stats> stats, int width, int height)
     {
         List<string> lines = new List<string>();
-        lines.Add(PadCentre("Possible interactions", width));
+        lines.Add("Possible interactions".PadCentre(width));
         lines.AddRange(MakeLines(Interactions, width));
         int i = lines.Count;
         for (; i < 12; i++)
@@ -130,7 +119,7 @@ public static class Printer
             lines.Add($"".PadRight(width));
         }
         lines.Add(new string('=', width));
-        lines.Add(PadCentre("Player Information", width));
+        lines.Add("Player Information".PadCentre(width));
         foreach(var entry in stats)
         {
             lines.Add(entry.ToString().PadRight(width));
@@ -145,8 +134,8 @@ public static class Printer
     private static List<string> MakeRightPannel(List<string> items, Hands hands, int BottleCaps, int GoldBars, int width, int height) 
     {
         List<string> lines = new List<string>();
-        lines.Add(PadCentre("Inventory", width));
-        lines.Add(PadCentre($"Bottle Caps: {BottleCaps}, Gold Bars: {GoldBars}", width));
+        lines.Add("Inventory".PadCentre(width));
+        lines.Add($"Bottle Caps: {BottleCaps}, Gold Bars: {GoldBars}".PadCentre(width));
         int i = 0;
         for (; i < items.Count; i++) 
         {
@@ -157,19 +146,19 @@ public static class Printer
             lines.Add(($"{i }. ").PadRight(width));
         }
         lines.Add(new string('=', width));
-        lines.Add(PadCentre("Equipped items", width));
+        lines.Add("Equipped items".PadCentre(width));
         i += 2;
         lines.Add("Left Hand:".PadRight(width));
         if (hands.isOccupied[0])
-            lines.Add(PadCentre(hands.itemSlot[0].Name, width));
+            lines.Add(hands.itemSlot[0].Name.PadCentre(width));
         else
-            lines.Add(PadCentre("empty", width));
+            lines.Add("empty".PadCentre(width));
         i += 2;
         lines.Add("Right Hand:".PadRight(width));
         if (hands.isOccupied[1])
-            lines.Add(PadCentre(hands.itemSlot[1].Name, width));
+            lines.Add(hands.itemSlot[1].Name.PadCentre(width));
         else
-            lines.Add(PadCentre("empty", width));
+            lines.Add("empty".PadCentre(width));
 
         i += 2;
         for (; i < height; i++)

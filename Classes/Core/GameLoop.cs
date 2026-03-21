@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Maze_Mania.Classes.Core.KeyHandlers;
 using Maze_Mania.Enums;
 
 namespace Maze_Mania.Classes.Core;
@@ -15,12 +16,16 @@ public class GameLoop
     private string? message { get; set; }
     public InputMode inputMode = InputMode.Normal;
     private int? tempItemIndex = null;
+
     public GameLoop(Player player, Maze maze)
     {
         this.player = player;
         this.maze = maze;
         isRunning = true;
+        inputHandler = new InputHandler();
     }
+
+    public InputHandler inputHandler { get; set; }
 
     public void Run()
     {
@@ -38,138 +43,9 @@ public class GameLoop
 
     }
 
-    private bool ReadInput(char key)
-    {
-        message = null;
-        key = Char.ToLower(key);
-        switch (inputMode)
-        {
-            case InputMode.Normal:
-                switch (key)
-                {
-                    case 'a':
-                        maze.MoveLeft();
-                        break;
-                    case 'd':
-                        maze.MoveRight();
-                        break;
-                    case 'w':
-                        maze.MoveUp();
-                        break;
-                    case 's':
-                        maze.MoveDown();
-                        break;
-                    case 'e':
-                        if (player.hasInventorySpace())
-                            maze.PickUp();
-                        break;
-                    case 'g':
-                        if ((player.isLeftHandOccupied() || player.isRightHandOccupied()) && player.hasInventorySpace())
-                            if (player.isLeftHandOccupied() && player.isRightHandOccupied() && !player.IsTwoHandedEquipped())
-                                inputMode = InputMode.HandUnequipSelection;
-                            else
-                            {
-                                player.Unequip('l');
-                                player.Unequip('r');
-                            }
-                        break;
-                    case 'f':
-                        if (player.HasEquipable())
-                            inputMode = InputMode.Equip;
-                        break;
-                    case 'q':
-                        if (isDropPossible() != DropOptions.None)
-                            inputMode = InputMode.Drop;
-                        break;
-                    case 'x':
-                        return false;
-                    default:
-                        break;
-                }
-                break;
-            case InputMode.Drop:
-                if (char.IsDigit(key))
-                {
-                    int num = key - '0';
-                    if (maze.PlayerDrops(key, num))
-                    {
-                        inputMode = InputMode.Normal;
-                    }
-                }
-                else
-                {
-                    switch (key)
-                    {
-                        case 'n':
-                            inputMode = InputMode.Normal;
-                            break;
-                        case 'c':
-                        case 'g':
-                            if (maze.PlayerDrops(key, -1))
-                                inputMode = InputMode.Normal;
-                            break;
-                        default:
-                            break;
-                    }
-                }
-                break;
-            case InputMode.Equip:
-                if (char.IsDigit(key))
-                {
-                    int num = key - '0';
-                    if (player.isTwoHanded(num))
-                    {
-                        if (player.CanEquipTwoHanded(num) && player.Equip(num, '?'))
-                            inputMode = InputMode.Normal;
-                    }
-                    else
-                    {
-                        if (num < player.getAllItemNames().Count)
-                        {
-                            tempItemIndex = num;
-                            inputMode = InputMode.HandSelection;
-                        }
-                    }
-                }
-                break;
-            case InputMode.HandSelection:
-                switch (key)
-                {
-                    case 'l':
-                    case 'r':
-                        if (player.Equip(tempItemIndex, key))
-                        {
-                            inputMode = InputMode.Normal;
-                            tempItemIndex = null;
-                        }
-                        break;
-                    case 'n':
-                        inputMode = InputMode.Equip;
-                        break;
-                    default:
-                        break;
-                }
-                break;
-            case InputMode.HandUnequipSelection:
-                switch (key)
-                {
-                    case 'l':
-                    case 'r':
-                        if (player.Unequip(key))
-                            inputMode = InputMode.Normal;
+    private bool ReadInput(char key) => 
+        inputHandler.HandleInput(key, player, maze, ref inputMode, ref tempItemIndex);
 
-                        break;
-                    case 'n':
-                        inputMode = InputMode.Normal;
-                        break;
-                    default:
-                        break;
-                }
-                break;
-        }
-
-        return true;
-    }
     private GameState updateGameState()
     {
         List<string>? Interaction = findInteractions();
@@ -180,7 +56,7 @@ public class GameLoop
     private List<string> findInteractions()
     {
         List<string> Interactions = new List<string>();
-        DropOptions dropOption = isDropPossible();
+        DropOptions dropOption = player.isDropPossible();
 
         switch (inputMode)
         {
@@ -250,16 +126,6 @@ public class GameLoop
 
         return Interactions;
     }
-
-    private DropOptions isDropPossible()
-    {
-        DropOptions dropOptions = new DropOptions();
-        if (player.inventory.items.Count > 0)
-            dropOptions = DropOptions.Item;
-        if (player.inventory.areBottleCaps())
-            dropOptions = dropOptions | DropOptions.BottleCap;
-        if (player.inventory.areGoldBars())
-            dropOptions = dropOptions | DropOptions.GoldBar;
-        return dropOptions;
-    }
+    
+    
 }

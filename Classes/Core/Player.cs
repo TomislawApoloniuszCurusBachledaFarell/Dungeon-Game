@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using Maze_Mania.Classes.Utilis;
@@ -60,6 +61,17 @@ public class Player
     public bool isRightHandOccupied() => inventory.hands.isOccupied[1];
     public bool isLeftHandOccupied() => inventory.hands.isOccupied[0];
     public bool isTwoHanded(int index) => index >= 0 && index < inventory.items.Count && inventory.items[index].TwoHanded;
+    public DropOptions isDropPossible()
+    {
+        DropOptions dropOptions = new DropOptions();
+        if (inventory.items.Count > 0)
+            dropOptions = DropOptions.Item;
+        if (inventory.areBottleCaps())
+            dropOptions = dropOptions | DropOptions.BottleCap;
+        if (inventory.areGoldBars())
+            dropOptions = dropOptions | DropOptions.GoldBar;
+        return dropOptions;
+    }
     public bool hasInventorySpace() => inventory.HasFreeSpace();
     public bool HasEquipable()
     {
