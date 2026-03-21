@@ -5,9 +5,10 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using Maze_Mania.Enums;
-using Maze_Mania.Interfaces;
+using Maze_Mania.Interfaces.CoreInterfaces;
+using Maze_Mania.Classes.Core.InputHandlers.ModeHandlers;
 
-namespace Maze_Mania.Classes.Core.InputHandlers;
+namespace Maze_Mania.Classes.Core.InputHandlers.ModeHandlers;
 
 public class NormalHandler : IModeHandler
 {
