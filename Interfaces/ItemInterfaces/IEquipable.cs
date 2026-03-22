@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Maze_Mania.Classes;
 
-namespace Maze_Mania.Interfaces;
+namespace Maze_Mania.Interfaces.ItemInterfaces;
 
 public interface IEquiplable : IItem
 {

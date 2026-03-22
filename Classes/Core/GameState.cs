@@ -17,6 +17,7 @@ public class GameState
     public Hands hands { get; set; }
     public int BottleCaps;
     public int GoldBars;
+    public string message;
     public InputMode Mode;
     public DropOptions DropOptions;
     public List<Stats> stats { get; set; }
@@ -29,7 +30,7 @@ public class GameState
         public char Symbol { get; set; }
     }
 
-    public GameState(char[,] board, Player player, List<string> Interaction, InputMode mode)
+    public GameState(char[,] board, Player player, List<string> Interaction, InputMode mode, string message)
     {
         this.board = board;
         PlayerPos = new PlayerState();
@@ -47,6 +48,7 @@ public class GameState
         this.Interaction = Interaction;
         Mode = mode;
         stats = player.stats;
+        this.message = message;
 
     }
 }

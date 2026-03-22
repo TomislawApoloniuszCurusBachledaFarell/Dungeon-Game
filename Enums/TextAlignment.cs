@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Maze_Mania.Interfaces.ItemInterfaces;
+namespace Maze_Mania.Enums;
 
-public interface IWeapon : IEquiplable
+public enum TextAlignment
 {
-    int Damage { get; }
-}
+    Left,
+    Right,
+    Centre
+};

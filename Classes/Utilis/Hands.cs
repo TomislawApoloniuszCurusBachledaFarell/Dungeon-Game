@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Maze_Mania.Interfaces;
+using Maze_Mania.Interfaces.ItemInterfaces;
 
 namespace Maze_Mania.Classes.Utilis;
 

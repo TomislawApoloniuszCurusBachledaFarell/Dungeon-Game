@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Maze_Mania.Classes.Core;
 using Maze_Mania.Enums;
 
-namespace Maze_Mania.Interfaces;
+namespace Maze_Mania.Interfaces.CoreInterfaces;
 
 public interface IModeHandler
 {

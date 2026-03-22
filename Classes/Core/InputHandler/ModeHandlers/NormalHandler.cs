@@ -29,7 +29,8 @@ public class NormalHandler : IModeHandler
                 maze.MoveDown();
                 break;
             case 'e':
-                if (player.hasInventorySpace())
+                string? name = maze.ItemBoard[player.yPos, player.xPos].FirstOrDefault()?.Name;
+                if (player.hasInventorySpace() || name == "Gold Bar" || name == "Bottle Cap")
                     maze.PickUp();
                 break;
             case 'g':

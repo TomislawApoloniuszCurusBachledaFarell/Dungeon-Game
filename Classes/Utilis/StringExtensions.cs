@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Maze_Mania.Enums;
 
 namespace Maze_Mania.Classes.Utilis;
 
@@ -19,5 +20,22 @@ public static class StringExtension
         side = Math.Max(0, len - (side + str.Length));
         sb.Append("".PadRight(side));
         return sb.ToString();
+    }
+
+    public static string AlignText(this string str, int len, TextAlignment textAlignment = TextAlignment.Left)
+    {
+        if (len < str.Length) return str.Substring(0, len);
+
+        switch (textAlignment)
+        {
+            case TextAlignment.Left:
+                return str.PadRight(len);
+            case TextAlignment.Right:
+                return str.PadLeft(len);
+            case TextAlignment.Centre:
+                return str.PadCentre(len);
+            default:
+                return str;
+        }
     }
 }
