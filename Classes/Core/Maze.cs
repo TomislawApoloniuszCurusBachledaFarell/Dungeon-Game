@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Maze_Mania.Classes.Utilis;
 using Maze_Mania.Interfaces.ItemInterfaces;
+using Vault_Scavanger.Classes.Core.VaultBuilder;
 
 namespace Maze_Mania.Classes.Core;
 
@@ -18,38 +19,12 @@ public class Maze
     public int X { get; private set; }
     public int Y { get; private set; }
 
-    public Maze(Player player, int X = 40, int Y = 20)
+    public Maze(Player player, VaultBuilder builder)
     {
-        board = new char[Y, X];
-        ItemBoard = new List<IItem>[Y, X];
-        
-        for(int i  = 0; i < Y; i++)
-        {
-            for(int j = 0; j < X; j++)
-            {
-                ItemBoard[i, j] = new List<IItem>();
-            }
-        }
-
-        for (int i = 0; i < Y; i++)
-        {
-            for (int j = 0; j < X; j++)
-            {
-                board[i, j] = ' ';
-            }
-        }
-
-        for (int i = 0; i < X; i++)
-        {
-            board[Y - 1, i] = '█';
-            board[0, i] = '█';
-        }
-
-        for (int i = 1; i < Y; i++)
-        {
-            board[i, 0] = '█';
-            board[i, X - 1] = '█';
-        }
+        board = builder.board;
+        ItemBoard = builder.ItemBoard;
+        X = builder.X;
+        Y = builder.Y;
 
         _player = player;
     }
@@ -152,7 +127,11 @@ public class Maze
         bool b = y >= 0;
         bool c = x < board.GetLength(1);
         bool e = y < board.GetLength(0);
-        bool d = board[y, x] != '█';
+        bool d;
+        if( a && b && c && e)
+            d = board[y, x] != '█';
+        else 
+            return false;
 
         return x >= 0 && y >= 0 && y < board.GetLength(0) && x < board.GetLength(1) && board[y, x] != '█';
     }

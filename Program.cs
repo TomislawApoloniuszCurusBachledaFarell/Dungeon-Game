@@ -4,14 +4,16 @@ using Maze_Mania.Classes.Items.Currency;
 using Maze_Mania.Classes.Items.Miscellaneous;
 using Maze_Mania.Classes.Items.Weapon;
 using Maze_Mania.Interfaces;
+using Vault_Scavanger.Classes.Core.VaultBuilder;
 
 public static class Program
 {
     static void Main()
     {
         Player player = new Player(5, 5);
-
-        Maze maze = new Maze(player);
+        VaultBuilder vaultBuilder = new VaultBuilder(20, 40);
+        vaultBuilder.Build();
+        Maze maze = new Maze(player, vaultBuilder);
 
         MiscellaneousItem ESSBottle = new MiscellaneousItem { Name = "Empty Sunset Sarsaparilla bottle", Symbol = 'E', Value = 2 };
         MiscellaneousItem BigESSBottle = new MiscellaneousItem { Name = "Big Empty Sunset Sarsaparilla bottle", Symbol = 'B', Value = 2, TwoHanded = true };
