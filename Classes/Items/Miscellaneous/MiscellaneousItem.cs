@@ -12,6 +12,7 @@ public class MiscellaneousItem : IEquiplable
 {
     public string Name { get; set; }
     public char Symbol { get; set; }
+    public bool CanPickUpWhenInventoryFull => false;
     public int Value { get; set; }
     public bool TwoHanded { get; set; } = false;
     public void PickUp(Inventory inv) => inv.AddItem(this);

@@ -7,6 +7,7 @@ using Maze_Mania.Classes.Core.InputHandlers;
 using Maze_Mania.Enums;
 using Maze_Mania.Interfaces.CoreInterfaces;
 using Maze_Mania.Classes.Core.InputHandlers.ModeHandlers;
+using Maze_Mania.Classes.Utilis;
 
 namespace Maze_Mania.Classes.Core.KeyHandlers;
 
@@ -21,7 +22,7 @@ public class InputHandler
         [InputMode.HandUnequipSelection] = new HandUnequipSelectionHandler()
     };
 
-    public bool HandleInput(char key, Player player, Maze maze,
+    public InputIResult HandleInput(char key, Player player, Maze maze,
                 ref InputMode inputMode, ref int? tempItemIndex)
     {
         key = Char.ToLower(key);

@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Maze_Mania.Classes.Utilis;
 using Maze_Mania.Interfaces.ItemInterfaces;
 
 namespace Maze_Mania.Classes.Core;
@@ -52,45 +54,96 @@ public class Maze
         _player = player;
     }
 
-    public void PickUp()
+    public InputIResult PickUp()
     {
+        InputIResult result = new InputIResult();
         int x = _player.xPos;
         int y = _player.yPos;
-        
-        if (ItemBoard[y, x].Count == 0) { return; }
-        _player.pickUpItem(retrieveItem(y, x));
+
+        if (ItemBoard[y, x].Count == 0) 
+        {
+            result.resultMessage = $"There is nothing to pick up here"; 
+            return result;
+        }
+        IItem? item = ItemBoard[y, x].FirstOrDefault();
+        if (_player.hasInventorySpace() || (item != null && item.CanPickUpWhenInventoryFull))
+        {
+            return _player.pickUpItem(retrieveItem(y, x));
+        }
+        else
+        {
+            result.resultMessage = $"Inventory is full, cannot pick up the item";
+        }
+        result.success = false; 
+        return result;
     }
 
-    public void MoveLeft()
+    public InputIResult MoveLeft()
     {
+        InputIResult result = new InputIResult();
         int x = _player.xPos;
         int y = _player.yPos;
         if (isAccesible(y, x - 1))
+        {
             _player.setPos(x - 1, y);
+            result.resultMessage = $"Player moved left from {y} {x}";
+            result.success = true ;
+            return result;
+        }
+        result.resultMessage = $"Player cant move left";
+        result.success = false;
+        return result;
     }
 
-    public void MoveRight()
+    public InputIResult MoveRight()
     {
+        InputIResult result = new InputIResult();
         int x = _player.xPos;
         int y = _player.yPos;
         if (isAccesible(y, x + 1))
+        {
             _player.setPos(x + 1, y);
+            result.resultMessage = $"Player moved right from {y} {x}";
+            result.success = true;
+            return result;
+        }
+        result.resultMessage = $"Player cant move right";
+        result.success = false;
+        return result;
     }
 
-    public void MoveUp()
+    public InputIResult MoveUp()
     {
+        InputIResult result = new InputIResult();
         int x = _player.xPos;
         int y = _player.yPos;
         if (isAccesible(y - 1, x))
+        {
             _player.setPos(x, y - 1);
+            result.resultMessage = $"Player moved up from {y} {x}";
+            result.success = true;
+            return result;
+        }
+        result.resultMessage = $"Player cant move up";
+        result.success = false;
+        return result;
     }
 
-    public void MoveDown()
+    public InputIResult MoveDown()
     {
+        InputIResult result = new InputIResult();
         int x = _player.xPos;
         int y = _player.yPos;
         if (isAccesible(y + 1, x))
+        {
             _player.setPos(x, y + 1);
+            result.resultMessage = $"Player moved down from {y} {x}";
+            result.success = true;
+            return result;
+        }
+        result.resultMessage = $"Player cant move down";
+        result.success = false;
+        return result;
     }
 
     private bool isAccesible(int y, int x)
@@ -138,7 +191,7 @@ public class Maze
         return ItemBoard[y, x].First().Symbol;
     }
 
-    public bool PlayerDrops(char c, int index)
+    public InputIResult PlayerDrops(char c, int index)
     {
         switch (c)
         {
@@ -150,25 +203,38 @@ public class Maze
         }
     }
 
-    private bool PlayerDropsCurrency(char c)
+    private InputIResult PlayerDropsCurrency(char c)
     {
         IItem? item = _player.dropCurrency(c);
+        InputIResult result = new InputIResult();
+        /*
         if (item == null)
         {
-            return false;
+            result.success = false;
+            result.resultMessage = $"Player was unable to drop an item.Index {c} does not contain any item";
+            return result;
         }
+        */
+        result.success = true;
+        result.resultMessage = $"{item.Name} was dropped at {_player.yPos}, { _player.xPos}";
         addItem(item, _player.yPos, _player.xPos);
-        return true;
+        return result;
     }
 
-    private bool PlayerDropsItem(int index)
+    private InputIResult PlayerDropsItem(int index)
     {
         IItem? item = _player.dropItem(index);
+        InputIResult result = new InputIResult();
+
         if (item == null)
         {
-            return false;
+            result.success = false;
+            result.resultMessage = $"Player was unable to drop an item.Index {index} does not contain any item";
+            return result;
         }
         addItem(item, _player.yPos, _player.xPos);
-        return true;
+        result.success = true;
+        result.resultMessage = $"{item.Name} was dropped at {_player.yPos}, {_player.xPos}";
+        return result;
     }
 }

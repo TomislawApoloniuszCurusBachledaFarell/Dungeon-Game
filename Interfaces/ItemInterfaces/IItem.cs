@@ -11,6 +11,7 @@ public interface IItem
 {
     public string Name { get; }
     public char Symbol { get; }
+    public bool CanPickUpWhenInventoryFull { get; }
     public void PickUp(Inventory inv);
 
 }

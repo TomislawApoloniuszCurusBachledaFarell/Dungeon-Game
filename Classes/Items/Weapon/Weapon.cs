@@ -12,6 +12,7 @@ public abstract class Weapon : IWeapon
 {
     public string Name { get; set; }
     public char Symbol { get; set; }
+    public bool CanPickUpWhenInventoryFull => false;
     public int Value { get; set; }
     public int Damage { get; set; }
     public bool TwoHanded { get; set; }

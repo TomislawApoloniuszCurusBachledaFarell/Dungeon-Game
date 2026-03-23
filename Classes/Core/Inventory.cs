@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using Maze_Mania.Classes.Items.Currency;
@@ -94,34 +95,77 @@ public class Inventory
         return hands.itemSlot[0].TwoHanded;
     }
 
-    public bool PlaceInHand(int index, char key)
+    public InputIResult PlaceInHand(int index, char key)
     {
-        bool didSucceed = false;
-
+        InputIResult result = new InputIResult();
+        result.success = false;
+        string name = items[index].Name;
+        string hand;
         switch (key)
         {
             case 'l':
-                didSucceed = PlaceInCertainHand(index, 0); 
+                hand = "left hand";
+                result.success = PlaceInCertainHand(index, 0); 
                 break;
             case 'r':
-                didSucceed = PlaceInCertainHand(index, 1);
+                hand = "right hand";
+                result.success = PlaceInCertainHand(index, 1);
                 break;
             default:
-                didSucceed = PlaceInBothHands(index);
+                hand = "both hands";
+                result.success = PlaceInBothHands(index);
                 break;
         }
-        return didSucceed;
+        result.resultMessage = $"{name} was placed in {hand}";
+        if (!result.success) 
+        {
+            result.resultMessage = $"Couldn't place {name} in {hand}";
+        }
+        return result;
     }
-    public bool Unequip(char key)
+    public InputIResult Unequip(char key)
     {
+        InputIResult result = new InputIResult();
         switch (key)
         {
             case 'l':
-                return GetItemFromHand(0);
+                result.resultMessage = "Unequiped item from left hand";
+                result.success = GetItemFromHand(0);
+                if (!result.success)
+                {
+                    if (!hands.isOccupied[1])
+                    {
+                        result.resultMessage = "There is no items to be unequiped from left hand";
+                    }
+                    else
+                    {
+                        result.resultMessage = "There is no space in inventory to unequip the item to";
+                    }
+                }
+                return result;
+
             case 'r':
-                return GetItemFromHand(1);
+                result.resultMessage = "Unequiped item from right hand";
+                result.success = GetItemFromHand(1);
+                if (!result.success)
+                {
+                    if (!hands.isOccupied[1])
+                    {
+                        result.resultMessage = "There is no items to be unequiped from left hand";
+                    }
+                    else
+                    {
+                        result.resultMessage = "There is no space in inventory to unequip the item to";
+                    }
+                }
+
+                return result;
+
             default:
-                return false;
+                result.resultMessage = "This key has no function here";
+                result.success = false;
+                return result;
+
         }
     }
 

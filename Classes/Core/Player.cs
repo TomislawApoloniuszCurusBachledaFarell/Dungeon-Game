@@ -31,9 +31,19 @@ public class Player
         this.yPos = yPos;
     }
 
-    public void pickUpItem(IItem item)
+    public InputIResult pickUpItem(IItem item)
     {
-        if (item != null) item.PickUp(inventory);
+        InputIResult result = new InputIResult();
+        if (item != null)
+        {
+            item.PickUp(inventory);
+            result.success = true;
+            result.resultMessage = $"Picked up {item.Name}";
+            return result;
+        }
+        result.success= false;
+        result.resultMessage = $"Somethng unexpected happened";
+        return result ;
     }
 
     public IItem? dropItem(int index)
@@ -50,13 +60,13 @@ public class Player
     public List<bool> getAllItemHandability() => inventory.getAllItemHandability();
 
 
-    public bool Equip(int? index, char key)
+    public InputIResult Equip(int? index, char key)
     {
-        if(index == null) return false;
+        if(index == null) return new InputIResult {success = false, resultMessage = "Player did not specify which item to equip" };
         return inventory.PlaceInHand(index.Value, key);
     }
     public bool IsTwoHandedEquipped() => inventory.isTwoHandedEquipped();
-    public bool Unequip(char key) => inventory.Unequip(key);
+    public InputIResult Unequip(char key) => inventory.Unequip(key);
     public bool CanEquipTwoHanded(int index) => inventory.CanEquipTwoHanded(index);
     public bool isRightHandOccupied() => inventory.hands.isOccupied[1];
     public bool isLeftHandOccupied() => inventory.hands.isOccupied[0];

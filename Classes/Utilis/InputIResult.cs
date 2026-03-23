@@ -8,6 +8,6 @@ namespace Maze_Mania.Classes.Utilis;
 
 public class InputIResult
 {
-    public bool keepRunning {  get; set; }
-    public string resultMessage { get; set; }
+    public bool success {  get; set; }
+    public string? resultMessage { get; set; }
 }

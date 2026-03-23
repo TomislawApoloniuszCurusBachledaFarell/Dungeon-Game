@@ -12,6 +12,7 @@ public class BottleCap : ICurrency
 {
     public string Name => "Bottle Cap";
     public char Symbol => 'C';
+    public bool CanPickUpWhenInventoryFull => true;
     public void PickUp(Inventory inv) => AddCurrency(inv);
     public void AddCurrency(Inventory inv) => inv.currency.BottleCaps++;
 }

@@ -12,6 +12,7 @@ public class GoldBar : ICurrency
 {
     public string Name => "Gold Bar";
     public char Symbol => 'G';
+    public bool CanPickUpWhenInventoryFull => true;
     public void PickUp(Inventory inv) => AddCurrency(inv);
     public void AddCurrency(Inventory inv) => inv.currency.GoldBars++;
 }

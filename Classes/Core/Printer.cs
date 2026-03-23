@@ -21,6 +21,7 @@ public static class Printer
         
         Console.ReadKey(true);
         Console.Clear();
+        Console.ForegroundColor = ConsoleColor.DarkGreen;
         PrintTitle();
         //Print(gameState);
     }
@@ -53,6 +54,8 @@ public static class Printer
       
     public static void Print(GameState gameState)
     {
+        //Console.ForegroundColor = ConsoleColor.DarkGreen;
+
         int WindowWidth = Console.WindowWidth;
         int WindowHeight = Console.WindowHeight;
         int height = gameState.board.GetLength(0);
