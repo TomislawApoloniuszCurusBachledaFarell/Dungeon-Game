@@ -47,7 +47,7 @@ public class VaultBuilder
             new FilledVaultProcedure(),
             //new EmptyVaultProcedure(),
             new AddCentralRoom(8, 20),
-            new AddRooms(15)
+            new AddRooms(20, 6, 10, true)
         };
         foreach (IBuildProcedure Procedure in NormalVault) 
         {

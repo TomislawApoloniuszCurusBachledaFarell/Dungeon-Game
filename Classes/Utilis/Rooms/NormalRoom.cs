@@ -16,8 +16,12 @@ public class NormalRoom : Room
 
     public override (int, int) GeneratePosition(int Y, int X, Random rand)
     {
-        int YPos = rand.Next(Y);
-        int XPos = rand.Next(X);
+        if(rand == null)
+        {
+            return(Y, X);
+        }
+        int YPos = rand.Next(1, Y);
+        int XPos = rand.Next(1, X);
         return (YPos, XPos);
     }
 }

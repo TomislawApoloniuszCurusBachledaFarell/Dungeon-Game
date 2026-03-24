@@ -14,59 +14,85 @@ public class AddRooms : IBuildProcedure
     int MaxWidth;
     int MaxLength;
     int Count;
-    int minimalSize = 4;
-    public AddRooms(int count, int maxLength = 0, int maxWidth = 0)
+    int minimalSize = 3;
+    bool IncludeNonSeparated;
+    public AddRooms(int count, int maxLength = 0, int maxWidth = 0, bool IncludeNonSeparated = false)
     {
         Count = count;
-        MaxLength = Math.Max(minimalSize + 2, maxLength);
-        MaxWidth = Math.Max(minimalSize + 2, maxWidth);
+        MaxLength = Math.Max(minimalSize, maxLength);
+        MaxWidth = Math.Max(minimalSize, maxWidth);
+        this.IncludeNonSeparated = IncludeNonSeparated;
     }
 
     public void Execute(VaultBuilder builder)
     {
-        for (int i = 0; i < Count; i++)
+        for (int i = 0; i < Count; i++) 
         {
-            int Length = builder.rand.Next(minimalSize, MaxLength + 1);
-            int Width = builder.rand.Next(minimalSize, MaxWidth + 1);
-            builder.rooms.Add(new NormalRoom(builder.board.GetLength(0), builder.board.GetLength(1), Length, Width, builder.rand));
-        }
+            int width = builder.rand.Next(minimalSize, MaxWidth);
+            int length = builder.rand.Next(minimalSize, MaxLength);
 
-        NormalizeRooms(builder);
+            NormalRoom room = new NormalRoom(1, 1, length, width);
+
+            if(TryFitIntoSpiral(builder, room))
+            {
+                builder.rooms.Add(room);
+            }
+            else if (IncludeNonSeparated)
+            {
+                if(room.FitsInside(builder.Y, builder.X)) 
+                    builder.rooms.Add(room);
+                else
+                {
+                    builder.rooms.Add(new NormalRoom(builder.rand.Next(builder.Y), builder.rand.Next(builder.X), length, width));
+                }
+            }
+        }
     }
 
-    public void NormalizeRooms(VaultBuilder builder)
+    bool TryFitIntoSpiral(VaultBuilder builder, Room room)
     {
-        List<Room> notNormalized = new List<Room>(builder.rooms);
-        List<Room?> alreadyNormalized = new List<Room>();
-        alreadyNormalized.Add(notNormalized.GetAndRemove(0));
-        if (alreadyNormalized[0] == null)
-            return;
-        int iterationCount = notNormalized.Count;
-        int safety = 100;
-        for (int i = 0; i < iterationCount; i++)
+        int startX = builder.rand.Next(2 * builder.X / 5 , 3 * builder.X / 5 );
+        int startY = builder.rand.Next(2 * builder.Y / 5 , 3 * builder.Y / 5 );
+        int r = Math.Max(builder.X, builder.Y);
+        foreach ((int Y, int X) in GeneraateSpiralPosition(startX, startY, r)) 
         {
-            Room room = notNormalized[0];
-            bool normalized = false;
-            int curIteration = 0;
-            while (!normalized && curIteration < safety)
+            room.SetPosition(Y, X);
+            if(!room.FitsInside(builder.Y, builder.X))
+                continue;
+            bool Separate = true;
+            foreach (Room otherRoom in builder.rooms) 
             {
-                curIteration++;
-                normalized = true;
-                foreach (Room otherRoom in alreadyNormalized)
+                if (room.Intersects(otherRoom))
                 {
-                    if (!room.Intersects(otherRoom))
-                    {
-                        continue;
-                    }
-                    normalized = false;
-                    room.MoveAwayFrom(otherRoom);
+                    Separate = false;
                     break;
                 }
             }
-
-
-            alreadyNormalized.Add(notNormalized.GetAndRemove(0));
+            if (Separate)
+                return Separate;
         }
-        builder.rooms = alreadyNormalized;
+        return false;
+
+    }
+
+    IEnumerable<(int Y, int X)> GeneraateSpiralPosition(int startX, int startY, int maxRadius)
+    {
+        yield return (startY, startX);
+
+        for (int r = 1; r <= maxRadius; r++)
+        {
+            for (int x = startX - r; x <= startX + r; x++)
+                yield return (startY - r, x);
+
+            for (int y = startY - r + 1; y <= startY + r; y++)
+                yield return (y, startX + r);
+
+            for (int x = startX + r - 1; x >= startX - r; x--)
+                yield return (startY + r, x);
+
+            for (int y = startY + r - 1; y >= startY - r + 1; y--)
+                yield return (y, startX - r);
+        }
+
     }
 }

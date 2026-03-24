@@ -42,32 +42,18 @@ public abstract class Room
         return true;
     }
 
-    public void MoveRoom(int xShift, int yShift)
+    public void SetPosition(int y, int x)
     {
-        X += xShift; 
-        Y += yShift;
+        Y = y;
+        X = x;
     }
 
-    public void MoveAwayFrom(Room other)
+    public bool FitsInside(int maxY, int maxX, int margin = 1)
     {
-        int xDif = this.X - other.X;
-        int yDif = this.Y - other.Y;
-        if(Math.Abs(xDif) < Math.Abs(yDif))
-        {
-            if (yDif < 0)
-                yDif--;
-            else
-                yDif++;
-            this.MoveRoom(0, yDif);
-        }
-        else
-        {
-            if (xDif < 0)
-                xDif--;
-            else
-                xDif++;
-
-            this.MoveRoom(xDif, 0);
-        }
+        return X >= margin &&
+               Y >= margin &&
+               X + Width <= maxX - margin &&
+               Y + Length <= maxY - margin;
     }
+
 }
