@@ -21,7 +21,7 @@ public static class InteractionFinder
         {
             case InputMode.Normal:
                 string? name = maze.ItemBoard[player.yPos, player.xPos].FirstOrDefault()?.Name;
-                if (maze.board[player.yPos, player.xPos] != ' ' && (player.hasInventorySpace() || name == "Gold Bar" || name == "Bottle Cap"))
+                if (!" █".Contains(maze.board[player.yPos, player.xPos]) && (player.hasInventorySpace() || name == "Gold Bar" || name == "Bottle Cap"))
                     Interactions.Add($"press E to pick up {maze.ItemBoard[player.yPos, player.xPos].First().Name}");
                 if (dropOption != DropOptions.None)
                 {

@@ -16,10 +16,10 @@ public class Player
     public int yPos { get; private set; }
     public List<Stats> stats { get; private set; }
     public Inventory inventory;
-    public Player(int xPos, int yPos)
+    public Player((int yPos, int xPos) Position)
     {
-        this.xPos = xPos;
-        this.yPos = yPos;
+        this.xPos = Position.xPos;
+        this.yPos = Position.yPos;
         stats = new List<Stats>();
         SetUpStats();
         inventory = new Inventory();

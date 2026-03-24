@@ -10,9 +10,10 @@ public static class Program
 {
     static void Main()
     {
-        Player player = new Player(5, 5);
+        
         VaultBuilder vaultBuilder = new VaultBuilder(20, 40);
         vaultBuilder.Build();
+        Player player = new Player(vaultBuilder.GeneratePlayerPosition());
         Maze maze = new Maze(player, vaultBuilder);
 
         MiscellaneousItem ESSBottle = new MiscellaneousItem { Name = "Empty Sunset Sarsaparilla bottle", Symbol = 'E', Value = 2 };
