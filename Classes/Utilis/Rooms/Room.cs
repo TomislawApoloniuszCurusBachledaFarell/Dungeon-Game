@@ -26,4 +26,48 @@ public abstract class Room
     }
 
     public abstract (int, int) GeneratePosition(int Y, int X, Random random);
+
+    public bool Intersects(Room other)
+    {
+        int margin = 1;
+        if (X + Width + margin< other.X)
+            return false;
+        else if (Y + Length + margin < other.Y)
+            return false;
+        else if (X > other.X + other.Width + margin) 
+            return false;
+        else if(Y > other.Y + other.Length + margin)
+            return false;
+
+        return true;
+    }
+
+    public void MoveRoom(int xShift, int yShift)
+    {
+        X += xShift; 
+        Y += yShift;
+    }
+
+    public void MoveAwayFrom(Room other)
+    {
+        int xDif = this.X - other.X;
+        int yDif = this.Y - other.Y;
+        if(Math.Abs(xDif) < Math.Abs(yDif))
+        {
+            if (yDif < 0)
+                yDif--;
+            else
+                yDif++;
+            this.MoveRoom(0, yDif);
+        }
+        else
+        {
+            if (xDif < 0)
+                xDif--;
+            else
+                xDif++;
+
+            this.MoveRoom(xDif, 0);
+        }
+    }
 }

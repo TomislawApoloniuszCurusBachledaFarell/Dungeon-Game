@@ -154,8 +154,7 @@ public static class Printer
 
         lines.Add("Possible interactions".PadCentre(width));
         lines.AddRange(MakeLines(Interactions, width, true, TextAlignment.Left));
-        int i = Interactions.Count + 2;
-        for (; i < 15; i++)
+        while(lines.Count < 15 + 8)
         {
             lines.Add($" ".PadRight(width));
         }
@@ -232,8 +231,9 @@ public static class Printer
         
         StringBuilder sb = new StringBuilder();
         List<string> Message = MakeLines(new List<string>() { message }, boardWidth - 2);
+        lines.Add("|" + new string(' ', boardWidth - 2) + "|");
 
-        for (int i = 0; i < height; i++)
+        for (int i = 0; i < height - 1; i++)
         {
             string msg;
             if (i < Message.Count)

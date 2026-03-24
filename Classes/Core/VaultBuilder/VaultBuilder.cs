@@ -47,7 +47,7 @@ public class VaultBuilder
             new FilledVaultProcedure(),
             //new EmptyVaultProcedure(),
             new AddCentralRoom(8, 20),
-            new AddRooms(3)
+            new AddRooms(15)
         };
         foreach (IBuildProcedure Procedure in NormalVault) 
         {
@@ -61,11 +61,13 @@ public class VaultBuilder
     {
         foreach (Room room in rooms)
         {
-            int xStart = room.X;
-            int yStart = room.Y;
+            int xSize = room.X;
+            int ySize = room.Y;
             int length = room.Length;
             int width = room.Width;
 
+            int xStart = Math.Max(1, xSize);
+            int yStart = Math.Max(1, ySize);
             int yMax = Math.Min(Y - 1, yStart + length);
             int xMax = Math.Min(X - 1, xStart + width);
             for (int y = yStart; y < yMax; y++) 
