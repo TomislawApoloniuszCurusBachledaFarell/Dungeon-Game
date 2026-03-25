@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Vault_Scavanger.Classes.Utilis;
 using Vault_Scavanger.Classes.Utilis.Rooms;
-using Vault_Scavanger.Enums;
 using Vault_Scavanger.Interfaces.CoreInterfaces;
 
 namespace Vault_Scavanger.Classes.Core.VaultBuilder.Building_Procedures;
@@ -25,7 +24,7 @@ public class AddRooms : IBuildProcedure
         this.IncludeNonSeparated = IncludeNonSeparated;
     }
 
-    public Features Execute(VaultBuilder builder)
+    public void Execute(VaultBuilder builder)
     {
         for (int i = 0; i < Count; i++) 
         {
@@ -50,7 +49,6 @@ public class AddRooms : IBuildProcedure
         }
 
         builder.DrawRooms();
-        return Features.Movement;
     }
 
     bool TryFitIntoSpiral(VaultBuilder builder, Room room)

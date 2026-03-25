@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using Maze_Mania.Classes.Utilis;
 using Maze_Mania.Enums;
 using Microsoft.VisualBasic;
-using Vault_Scavanger.Enums;
 
 namespace Maze_Mania.Classes.Core;
 
@@ -17,9 +16,6 @@ public static class Printer
     {
         Console.OutputEncoding = System.Text.Encoding.UTF8;
         Console.CursorVisible = false;
-        Console.ForegroundColor = ConsoleColor.DarkGreen;
-        PrintTitle();
-        InstructionPrint(gameState.Features);
         Console.WriteLine("For the best experience, please switch the game to fullscreen and do not change the window size.");
         Console.WriteLine("Press any key to continue...");
         
@@ -28,37 +24,6 @@ public static class Printer
         Console.ForegroundColor = ConsoleColor.DarkGreen;
         PrintTitle();
         //Print(gameState);
-    }
-
-    public static void InstructionPrint(Features features)
-    {
-        List<string> instructions = new List<string>();
-        if((features & Features.Movement) != 0)
-        {
-            instructions.Add("Use WSAD to move.");
-        }
-        if((features & Features.Items) != 0)
-        {
-            instructions.Add("Press E when standing on a tile with an item to pick it up.");
-            instructions.Add("Press Q to drop item from your inventory.");
-            instructions.Add("Use C, G or numbers 0 - 9 to select item you wish to drop.");
-            instructions.Add("Press N to cancel droppping items.");
-        }
-        if((features & Features.Equipable) != 0)
-        {
-            instructions.Add("Press F to equip an item.");
-            instructions.Add("Press G to unequip an item.");
-            instructions.Add("Use R or L to select hand in which u wish to place the item.");
-            instructions.Add("Press N to cancel equiping items.");
-
-        }
-        instructions.Add("Press X to exit the game.");
-        StringBuilder sb  = new StringBuilder();
-        foreach (string instruction in instructions) 
-        {
-            sb.Append(instruction + '\n');
-        }
-        Console.Write(sb.ToString());
     }
 
     public static void PrintTitle()

@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Maze_Mania.Classes.Utilis;
 using Maze_Mania.Enums;
 using Maze_Mania.Interfaces;
-using Vault_Scavanger.Enums;
 
 namespace Maze_Mania.Classes.Core;
 
@@ -23,7 +22,6 @@ public class GameState
     public DropOptions DropOptions;
     public List<Stats> stats { get; set; }
     public List<string> Interaction {  get; set; }
-    public Features Features { get; set; } 
 
     public class PlayerState
     {
@@ -32,7 +30,7 @@ public class GameState
         public char Symbol { get; set; }
     }
 
-    public GameState(char[,] board, Player player, List<string> Interaction, InputMode mode, string message, Features features)
+    public GameState(char[,] board, Player player, List<string> Interaction, InputMode mode, string message)
     {
         this.board = board;
         PlayerPos = new PlayerState();
@@ -51,6 +49,6 @@ public class GameState
         Mode = mode;
         stats = player.stats;
         this.message = message;
-        this.Features = features;
+
     }
 }

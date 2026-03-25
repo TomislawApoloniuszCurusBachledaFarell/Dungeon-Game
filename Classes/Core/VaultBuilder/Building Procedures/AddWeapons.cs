@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Maze_Mania.Classes.Items.Miscellaneous;
 using Maze_Mania.Classes.Items.Weapon;
 using Maze_Mania.Interfaces.ItemInterfaces;
-using Vault_Scavanger.Enums;
 using Vault_Scavanger.Interfaces.CoreInterfaces;
 
 namespace Vault_Scavanger.Classes.Core.VaultBuilder.Building_Procedures;
@@ -28,7 +27,7 @@ public class AddWeapons : IBuildProcedure
         };
     }
 
-    public Features Execute(VaultBuilder builder)
+    public void Execute(VaultBuilder builder)
     {
         for (int i = 0; i < Count; i++)
         {
@@ -36,11 +35,10 @@ public class AddWeapons : IBuildProcedure
             IItem item = PossibleWeapons[itemId];
             List<(int Y, int X)> possibleTiles = builder.GetFreeSpaces();
             int tile = builder.rand.Next(possibleTiles.Count);
-            if (possibleTiles.Count == 0) return 0;
+            if (possibleTiles.Count == 0) return;
 
             builder.addItem(item, possibleTiles[tile]);
         }
-        return Features.Items | Features.Equipable;
     }
 
 }
