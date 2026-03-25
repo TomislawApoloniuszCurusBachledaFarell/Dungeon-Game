@@ -47,6 +47,8 @@ public class AddRooms : IBuildProcedure
                 }
             }
         }
+
+        builder.DrawRooms();
     }
 
     bool TryFitIntoSpiral(VaultBuilder builder, Room room)

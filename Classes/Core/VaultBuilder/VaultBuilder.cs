@@ -51,19 +51,13 @@ public class VaultBuilder
             new AddRooms(10, 4, 7),
 
             new AddCorridors(12),
+            new AddItems(10),
+            new AddWeapons(5)
         };
         foreach (IBuildProcedure Procedure in NormalVault) 
         {
             Procedure.Execute(this);
         }
-
-        GenerateMap();
-    }
-
-    public void GenerateMap()
-    {
-        DrawRooms();
-        DrawCorridor();
 
     }
 
@@ -123,5 +117,41 @@ public class VaultBuilder
         return (0, 0);
     }
 
+    public List<(int Y, int X)> GetFreeSpaces()
+    {
+        List<(int Y, int X)> result = new List<(int Y, int X)> ();
+        for(int i = 0; i < Y; i++)
+        {
+            for(int j = 0; j < X; j++)
+            {
+                if (board[i, j] != '█')
+                    result.Add((i, j));
+            }
+        }
+        return result;
+    }
 
+    public int addItem(IItem item, (int y, int x) Tile)
+    {
+        if (!isAccesible(Tile.y, Tile.x))
+        {
+            return 0;
+        }
+        if (board[Tile.y, Tile.x] == ' ')
+            board[Tile.y, Tile.x] = item.Symbol;
+        ItemBoard[Tile.y, Tile.x].Add(item);
+        return 1;
+    }
+
+    private bool isAccesible(int y, int x)
+    {
+        bool a = x >= 0;
+        bool b = y >= 0;
+        bool c = x < board.GetLength(1);
+        bool d = y < board.GetLength(0);
+        if (a && b && c && d)
+            return board[y, x] != '█';
+        else
+            return false;
+    }
 }

@@ -44,6 +44,8 @@ public class AddCorridors : IBuildProcedure
                 
             }
         }
+
+        builder.DrawCorridor();
     }
 
     (Room, int) FindNearest(Room thisRoom, List<Room> rooms)
