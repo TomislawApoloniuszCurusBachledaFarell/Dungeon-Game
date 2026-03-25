@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Maze_Mania.Classes.Core.KeyHandlers;
 using Maze_Mania.Classes.Utilis;
 using Maze_Mania.Enums;
+using Vault_Scavanger.Enums;
 
 namespace Maze_Mania.Classes.Core;
 
@@ -17,11 +18,13 @@ public class GameLoop
     private string? inputMessage = "";
     public InputMode inputMode = InputMode.Normal;
     private int? tempItemIndex = null;
+    Features features;
 
-    public GameLoop(Player player, Maze maze)
+    public GameLoop(Player player, Maze maze, Features features)
     {
         this.player = player;
         this.maze = maze;
+        this.features = features;
         isRunning = true;
         inputHandler = new InputHandler();
     }
@@ -55,7 +58,7 @@ public class GameLoop
     private GameState updateGameState()
     {
         List<string>? Interaction = findInteractions();
-        GameState state = new GameState(maze.board, player, Interaction, inputMode, inputMessage);
+        GameState state = new GameState(maze.board, player, Interaction, inputMode, inputMessage, features);
         return state;
     }
 
