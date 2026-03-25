@@ -46,8 +46,11 @@ public class VaultBuilder
         {
             new FilledVaultProcedure(),
             //new EmptyVaultProcedure(),
-            new AddCentralRoom(8, 20),
-            new AddRooms(6, 6, 10)
+            new AddCentralRoom(8, 15),
+
+            new AddRooms(10, 4, 7),
+
+            new AddCorridors(12),
         };
         foreach (IBuildProcedure Procedure in NormalVault) 
         {
@@ -58,6 +61,13 @@ public class VaultBuilder
     }
 
     public void GenerateMap()
+    {
+        DrawRooms();
+        DrawCorridor();
+
+    }
+
+    public void DrawRooms()
     {
         foreach (Room room in rooms)
         {
@@ -70,13 +80,32 @@ public class VaultBuilder
             int yStart = Math.Max(1, ySize);
             int yMax = Math.Min(Y - 1, yStart + length);
             int xMax = Math.Min(X - 1, xStart + width);
-            for (int y = yStart; y < yMax; y++) 
+            for (int y = yStart; y < yMax; y++)
             {
-                for(int x = xStart; x < xMax; x++)
+                for (int x = xStart; x < xMax; x++)
                 {
                     board[y, x] = ' ';
 
                 }
+            }
+        }
+    }
+
+    public void DrawCorridor()
+    {
+        foreach (Corridor corridor in corridors )
+        {
+            int fromY = corridor.From.Y;
+            int toY = corridor.To.Y;
+            int fromX = corridor.From.X;
+            int toX = corridor.To.X;
+            for(int y = Math.Min(fromY, toY); y <= Math.Max(toY, fromY); y++)
+            {
+                board[y, fromX] = ' ';
+            }
+            for(int x = Math.Min(fromX, toX); x <= Math.Max(toX, fromX); x++)
+            {
+                board[toY, x] = ' ';
             }
         }
     }
@@ -93,4 +122,6 @@ public class VaultBuilder
         }
         return (0, 0);
     }
+
+
 }

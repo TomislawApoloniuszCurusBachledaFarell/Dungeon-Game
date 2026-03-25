@@ -54,7 +54,7 @@ public class AddRooms : IBuildProcedure
         int startX = builder.rand.Next(2 * builder.X / 5 , 3 * builder.X / 5 );
         int startY = builder.rand.Next(2 * builder.Y / 5 , 3 * builder.Y / 5 );
         int r = Math.Max(builder.X, builder.Y);
-        foreach ((int Y, int X) in GeneraateSpiralPosition(startX, startY, r)) 
+        foreach ((int Y, int X) in GeneraateSpiralPosition(startX, startY, r, builder.rand)) 
         {
             room.SetPosition(Y, X);
             if(!room.FitsInside(builder.Y, builder.X))
@@ -75,24 +75,30 @@ public class AddRooms : IBuildProcedure
 
     }
 
-    IEnumerable<(int Y, int X)> GeneraateSpiralPosition(int startX, int startY, int maxRadius)
+    IEnumerable<(int Y, int X)> GeneraateSpiralPosition(int startX, int startY, int maxRadius, Random rand)
     {
-        yield return (startY, startX);
+        List<(int Y, int X)> points = new List<(int Y, int X)>();
 
+        points.Add((startY, startX));
         for (int r = 1; r <= maxRadius; r++)
         {
             for (int x = startX - r; x <= startX + r; x++)
-                yield return (startY - r, x);
+                points.Add((startY - r, x));
 
             for (int y = startY - r + 1; y <= startY + r; y++)
-                yield return (y, startX + r);
+                points.Add ((y, startX + r));
 
             for (int x = startX + r - 1; x >= startX - r; x--)
-                yield return (startY + r, x);
+                points.Add((startY + r, x));
 
             for (int y = startY + r - 1; y >= startY - r + 1; y--)
-                yield return (y, startX - r);
+                points.Add(((y, startX - r)));
         }
 
+        while(points.Count > 0)
+        {
+            int index = rand.Next(points.Count);
+            yield return points.GetAndRemove(index);
+        }
     }
 }

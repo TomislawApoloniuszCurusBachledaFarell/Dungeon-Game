@@ -24,4 +24,11 @@ public class NormalRoom : Room
         int XPos = rand.Next(1, X);
         return (YPos, XPos);
     }
+
+    public override (int, int) GetCorridorEntrance(Room? other = null, Random? rand = null)
+    {
+        if(rand == null)
+            rand = new Random();
+        return(Y + rand.Next(0, Length),  X + rand.Next(0, Width));
+    }
 }

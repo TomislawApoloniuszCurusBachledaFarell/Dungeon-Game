@@ -42,6 +42,8 @@ public abstract class Room
         return true;
     }
 
+    public abstract (int, int) GetCorridorEntrance(Room? other = null, Random? rand = null);
+
     public void SetPosition(int y, int x)
     {
         Y = y;
@@ -56,4 +58,23 @@ public abstract class Room
                Y + Length <= maxY - margin;
     }
 
+    public int DistanceTo(Room other)
+    {
+        int YUpDiff = Math.Abs(Y - (other.Y + other.Length));
+        int YDownDiff = Math.Abs(other.Y - (Y + Length));
+
+        int XLeftDiff = Math.Abs(X - (other.X + other.Width));
+        int XRightDiff = Math.Abs(other.X - (X + Width));
+
+        int YDiff = Math.Min(YUpDiff, YDownDiff);
+        int XDiff = Math.Min(XLeftDiff, XRightDiff);
+        return YDiff + XDiff;
+    }
+
+    public bool PointIsInside(int y, int x)
+    {
+        return Y <= y && Y + Length > y && X <= x && X + Width > x;
+    }
+
+    public bool PointIsInside((int y, int x) Point) => PointIsInside(Point.y, Point.x);
 }
