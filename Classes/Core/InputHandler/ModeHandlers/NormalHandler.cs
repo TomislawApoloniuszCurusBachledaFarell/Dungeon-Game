@@ -9,13 +9,15 @@ using Maze_Mania.Interfaces.CoreInterfaces;
 using Maze_Mania.Classes.Core.InputHandlers.ModeHandlers;
 using Maze_Mania.Classes.Utilis;
 using Maze_Mania.Interfaces.ItemInterfaces;
+using Vault_Scavanger.Classes.Core;
 
 namespace Maze_Mania.Classes.Core.InputHandlers.ModeHandlers;
 
 public class NormalHandler : IModeHandler
 {
-    public InputIResult HandleKey(char key, Player player, Maze maze, ref InputMode inputMode, ref int? tempItemIndex)
+    public InputIResult HandleKey(ConsoleKey ckey, Player player, Maze maze, KeyDefinitions KeyBinds, ref InputMode inputMode, ref int? tempItemIndex)
     {
+        char key = Char.ToLower((char)ckey); // temporary solution, this whole class will be remade anyway
         InputIResult result = new InputIResult();
         switch (key)
         {

@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 using Maze_Mania.Classes.Core;
 using Maze_Mania.Classes.Utilis;
 using Maze_Mania.Enums;
+using Vault_Scavanger.Classes.Core;
 
 namespace Maze_Mania.Interfaces.CoreInterfaces;
 
 public interface IModeHandler
 {
-    InputIResult HandleKey(char key, Player player, Maze maze, ref InputMode inputMode, ref int? tempItemIndex);
+    InputIResult HandleKey(ConsoleKey key, Player player, Maze maze, KeyDefinitions keyBinds, ref InputMode inputMode, ref int? tempItemIndex);
 }

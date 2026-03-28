@@ -10,9 +10,11 @@ namespace Maze_Mania.Classes.Items.Currency;
 
 public class GoldBar : ICurrency
 {
-    public string Name => "Gold Bar";
-    public char Symbol => 'G';
+    public string Name => getName;
+    public char Symbol => getChar;
     public bool CanPickUpWhenInventoryFull => true;
+    public static string getName => "Gold Bar";
+    public static char getChar => 'G';
     public void PickUp(Inventory inv) => AddCurrency(inv);
     public void AddCurrency(Inventory inv) => inv.currency.GoldBars++;
 }

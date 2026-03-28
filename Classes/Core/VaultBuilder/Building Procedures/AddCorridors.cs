@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Vault_Scavanger.Classes.Utilis;
 using Vault_Scavanger.Classes.Utilis.Rooms;
+using Vault_Scavanger.Enums;
 using Vault_Scavanger.Interfaces.CoreInterfaces;
 
 namespace Vault_Scavanger.Classes.Core.VaultBuilder.Building_Procedures;
@@ -16,7 +17,7 @@ public class AddCorridors : IBuildProcedure
     {
         Count = count;
     }
-    public void Execute(VaultBuilder builder)
+    public void Execute(VaultBuilder builder, ref Features features)
     {
 
         List<Room> rooms = builder.rooms;
@@ -37,14 +38,13 @@ public class AddCorridors : IBuildProcedure
         else
         {
             BuildSpanningTree(builder, Count);
-            if (Count > builder.rooms.Count - 1) 
+            if (Count > builder.rooms.Count - 1)
             {
                 int additionalCorridors = Count - (builder.rooms.Count - 1);
                 BuildAdditionalCorridors(builder, additionalCorridors);
-                
+
             }
         }
-
         builder.DrawCorridor();
     }
 
@@ -133,7 +133,7 @@ public class AddCorridors : IBuildProcedure
                     lookForCorridors = true;
                 else
                 {
-                    possibleConnections.RemoveAt(i);
+                    possibleConnections.RemoveAt(j);
                     j--;
                 }
             }

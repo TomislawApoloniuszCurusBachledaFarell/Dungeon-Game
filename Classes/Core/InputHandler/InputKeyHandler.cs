@@ -8,6 +8,7 @@ using Maze_Mania.Enums;
 using Maze_Mania.Interfaces.CoreInterfaces;
 using Maze_Mania.Classes.Core.InputHandlers.ModeHandlers;
 using Maze_Mania.Classes.Utilis;
+using Vault_Scavanger.Classes.Core;
 
 namespace Maze_Mania.Classes.Core.KeyHandlers;
 
@@ -22,13 +23,12 @@ public class InputHandler
         [InputMode.HandUnequipSelection] = new HandUnequipSelectionHandler()
     };
 
-    public InputIResult HandleInput(char key, Player player, Maze maze,
-                ref InputMode inputMode, ref int? tempItemIndex)
+    public InputIResult HandleInput(ConsoleKey key, Player player, Maze maze,
+                KeyDefinitions KeyBinds,  ref InputMode inputMode, ref int? tempItemIndex)
     {
-        key = Char.ToLower(key);
 
         IModeHandler Handler;
         ModeHandlers.TryGetValue(inputMode, out Handler);
-        return Handler.HandleKey(key, player, maze, ref inputMode, ref tempItemIndex);
+        return Handler.HandleKey(key, player, maze, KeyBinds, ref inputMode, ref tempItemIndex);
     }
 }

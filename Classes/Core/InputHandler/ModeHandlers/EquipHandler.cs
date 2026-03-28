@@ -6,17 +6,19 @@ using System.Threading.Tasks;
 using Maze_Mania.Classes.Utilis;
 using Maze_Mania.Enums;
 using Maze_Mania.Interfaces.CoreInterfaces;
+using Vault_Scavanger.Classes.Core;
+using Vault_Scavanger.Enums;
 
 namespace Maze_Mania.Classes.Core.InputHandlers.ModeHandlers;
 
 public class EquipHandler : IModeHandler
 {
-    public InputIResult HandleKey(char key, Player player, Maze maze, ref InputMode inputMode, ref int? tempItemIndex)
+    public InputIResult HandleKey(ConsoleKey key, Player player, Maze maze, KeyDefinitions keyBinds, ref InputMode inputMode, ref int? tempItemIndex)
     {
         InputIResult result = new InputIResult();
-        if (char.IsDigit(key))
+        if (ConsoleKey.D0 <= key && key <= ConsoleKey.D9)
         {
-            int num = key - '0';
+            int num = key - ConsoleKey.D0;
             if (player.isTwoHanded(num))
             {
                 if (player.CanEquipTwoHanded(num)) {
@@ -42,7 +44,7 @@ public class EquipHandler : IModeHandler
         }
         else
         {
-            if (key == 'n')
+            if (key == keyBinds.GetActionKey(GameActions.CancelAction))
             {
                 inputMode = InputMode.Normal;
                 result.resultMessage = "Cancelled equipping items";

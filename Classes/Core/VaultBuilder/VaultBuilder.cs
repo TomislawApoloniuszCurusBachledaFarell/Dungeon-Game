@@ -8,6 +8,7 @@ using Maze_Mania.Interfaces.ItemInterfaces;
 using Vault_Scavanger.Classes.Core.VaultBuilder.Building_Procedures;
 using Vault_Scavanger.Classes.Utilis;
 using Vault_Scavanger.Classes.Utilis.Rooms;
+using Vault_Scavanger.Enums;
 using Vault_Scavanger.Interfaces.CoreInterfaces;
 
 namespace Vault_Scavanger.Classes.Core.VaultBuilder;
@@ -22,6 +23,7 @@ public class VaultBuilder
     public List<IItem>[,] ItemBoard;
     public Random rand;
     public bool hasCentral = false;
+    public Features features = Features.None;
     public VaultBuilder(int Y, int X) 
     {
         rooms = new List<Room>();
@@ -48,15 +50,15 @@ public class VaultBuilder
             //new EmptyVaultProcedure(),
             new AddCentralRoom(8, 15),
 
-            new AddRooms(10, 4, 7),
+            new AddRooms(20, 4, 7),
 
-            new AddCorridors(12),
-            new AddItems(10),
-            new AddWeapons(5)
+            new AddCorridors(60),
+            new AddItems(12, 6),
+            new AddCurrencies(10)
         };
         foreach (IBuildProcedure Procedure in NormalVault) 
         {
-            Procedure.Execute(this);
+            Procedure.Execute(this, ref features);
         }
 
     }

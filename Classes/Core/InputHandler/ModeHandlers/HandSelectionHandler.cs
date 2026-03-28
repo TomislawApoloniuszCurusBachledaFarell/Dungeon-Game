@@ -6,32 +6,34 @@ using System.Threading.Tasks;
 using Maze_Mania.Classes.Utilis;
 using Maze_Mania.Enums;
 using Maze_Mania.Interfaces.CoreInterfaces;
+using Vault_Scavanger.Classes.Core;
+using Vault_Scavanger.Enums;
 
 namespace Maze_Mania.Classes.Core.InputHandlers.ModeHandlers;
 
 public class HandSelectionHandler : IModeHandler
 {
-    public InputIResult HandleKey(char key, Player player, Maze maze, ref InputMode inputMode, ref int? tempItemIndex)
+    public InputIResult HandleKey(ConsoleKey key, Player player, Maze maze, KeyDefinitions KeyBinds, ref InputMode inputMode, ref int? tempItemIndex)
     {
         InputIResult result = new InputIResult();
-        switch (key)
+        if (key == KeyBinds.GetActionKey(GameActions.LeftHand) || key == KeyBinds.GetActionKey(GameActions.RightHand))
         {
-            case 'l':
-            case 'r':
-                result = player.Equip(tempItemIndex, key);
-                if (result.success)
-                {
-                    inputMode = InputMode.Normal;
-                    tempItemIndex = null;
-                }
-                break;
-            case 'n':
-                result.resultMessage = "Cancelled selecting hands";
-                inputMode = InputMode.Equip;
-                break;
-            default:
-                result.resultMessage = "This key has no function here";
-                break;
+            result = player.Equip(tempItemIndex,Char.ToLower((char)key));
+            if (result.success)
+            {
+                inputMode = InputMode.Normal;
+                tempItemIndex = null;
+            }
+        }
+        else if (key == KeyBinds.GetActionKey(GameActions.CancelAction))
+        {
+            result.resultMessage = "Cancelled selecting hands";
+            inputMode = InputMode.Equip;
+        }
+        else
+        {
+            result.resultMessage = "This key has no function here";
+
         }
         result.success = true;
         return result;

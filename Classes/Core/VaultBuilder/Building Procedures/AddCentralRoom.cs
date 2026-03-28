@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Vault_Scavanger.Classes.Utilis.Rooms;
+using Vault_Scavanger.Enums;
 using Vault_Scavanger.Interfaces.CoreInterfaces;
 
 namespace Vault_Scavanger.Classes.Core.VaultBuilder.Building_Procedures;
@@ -19,7 +20,7 @@ public class AddCentralRoom : IBuildProcedure
         MaxWidth = Math.Max(minimalSize, maxWidth);
     }
 
-    public void Execute(VaultBuilder builder)
+    public void Execute(VaultBuilder builder, ref Features features)
     {
         if (builder.hasCentral) return;
         int Length = builder.rand.Next(minimalSize, MaxLength + 1);

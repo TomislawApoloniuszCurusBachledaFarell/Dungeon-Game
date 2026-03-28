@@ -10,9 +10,11 @@ namespace Maze_Mania.Classes.Items.Currency;
 
 public class BottleCap : ICurrency
 {
-    public string Name => "Bottle Cap";
-    public char Symbol => 'C';
+    public string Name => getName;
+    public char Symbol => getChar;
     public bool CanPickUpWhenInventoryFull => true;
+    public static string getName => "Bottle Cap";
+    public static char getChar => 'C';
     public void PickUp(Inventory inv) => AddCurrency(inv);
     public void AddCurrency(Inventory inv) => inv.currency.BottleCaps++;
 }

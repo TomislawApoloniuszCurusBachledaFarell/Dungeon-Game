@@ -16,7 +16,7 @@ public static class Program
         Player player = new Player(vaultBuilder.GeneratePlayerPosition());
         Maze maze = new Maze(player, vaultBuilder);
 
-        GameLoop game = new GameLoop(player, maze);
+        GameLoop game = new GameLoop(player, maze, vaultBuilder.features);
         game.Run();
 
         Console.Clear();
