@@ -1,94 +1,44 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Maze_Mania.Classes.Core;
+using Maze_Mania.Classes.Utilis;
 using Maze_Mania.Enums;
 using Maze_Mania.Interfaces.CoreInterfaces;
-using Maze_Mania.Classes.Core.InputHandlers.ModeHandlers;
-using Maze_Mania.Classes.Utilis;
-using Maze_Mania.Interfaces.ItemInterfaces;
-using Vault_Scavanger.Classes.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Maze_Mania.Classes.Core.InputHandlers.ModeHandlers;
+namespace Vault_Scavanger.Classes.Core.InputHandler.ModeHandlers;
 
-public class NormalHandler : IModeHandler
+public abstract class NormalHandler : IModeHandler
 {
-    public InputIResult HandleKey(ConsoleKey ckey, Player player, Maze maze, KeyDefinitions KeyBinds, ref InputMode inputMode, ref int? tempItemIndex)
+    protected NormalHandler? Next { get; private set;  }
+    public NormalHandler SetNext(NormalHandler next)
     {
-        char key = Char.ToLower((char)ckey); // temporary solution, this whole class will be remade anyway
-        InputIResult result = new InputIResult();
-        switch (key)
-        {
-            case 'a':
-                result = maze.MoveLeft();
-                break;
-            case 'd':
-                result = maze.MoveRight();
-                break;
-            case 'w':
-                result = maze.MoveUp();
-                break;
-            case 's':
-                result = maze.MoveDown();
-                break;
-            case 'e':
-                    result.resultMessage = maze.PickUp().resultMessage;
-                break;
-            case 'g':
-                if ((player.isLeftHandOccupied() || player.isRightHandOccupied()) && player.hasInventorySpace())
-                {
-                    if (player.isLeftHandOccupied() && player.isRightHandOccupied() && !player.IsTwoHandedEquipped())
-                    {
-                        inputMode = InputMode.HandUnequipSelection;
-                        result.resultMessage = $"Choose which item to unequip";
-                    }
-                    else
-                    {
-                        player.Unequip('l');
-                        player.Unequip('r');
-                        result.resultMessage = $"Unequiped item from both hands";
-                    }
-
-                }
-                else
-                {
-                    result.resultMessage = "This key has no function here";
-                }
-
-                break;
-            case 'f':
-                if (player.HasEquipable())
-                {
-                    inputMode = InputMode.Equip;
-                    result.resultMessage = $"Choose an item to equip";
-                }
-                else
-                {
-                    result.resultMessage = "This key has no function here";
-                }
-                break;
-            case 'q':
-                if (player.isDropPossible() != DropOptions.None)
-                {
-                    inputMode = InputMode.Drop;
-                    result.resultMessage = "Choose an item to drop";
-                }
-                else
-                {
-                    result.resultMessage = "This key has no function here";
-                }
-                break;
-            case 'x':
-                result.resultMessage = "Exited the game";
-                result.success = false;
-                return result;
-            default:
-                result.resultMessage = "This key has no function here";
-                break;
-        }
-        result.success = true;
-        return result;
+        Next = next;
+        return next;
     }
+
+    public InputIResult HandleKey(ConsoleKey PressedKey, Player player, Maze maze, KeyDefinitions KeyBinds, ref InputMode inputMode, ref int? tempItemIndex)
+    {
+        if (canHandle(PressedKey, KeyBinds)) 
+        {
+            return Process(PressedKey, player, maze, KeyBinds, ref inputMode, ref tempItemIndex);
+
+        }
+        else if(Next != null) 
+        {
+            return Next.HandleKey(PressedKey, player, maze, KeyBinds, ref inputMode, ref tempItemIndex);
+            
+
+        }
+        else
+        {
+            return new InputIResult() { resultMessage = InputMessages.NoFunction() , success =  true };
+        }
+
+    }
+
+    protected abstract bool canHandle(ConsoleKey PressedKey, KeyDefinitions keyBinds);
+    protected abstract InputIResult Process(ConsoleKey ckey, Player player, Maze maze, KeyDefinitions KeyBinds, ref InputMode inputMode, ref int? tempItemIndex);
 }

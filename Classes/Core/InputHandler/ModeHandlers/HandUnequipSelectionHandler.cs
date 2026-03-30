@@ -18,7 +18,8 @@ public class HandUnequipSelectionHandler : IModeHandler
         InputIResult result = new InputIResult();
         if (key == KeyBinds.GetActionKey(GameActions.LeftHand) || key == KeyBinds.GetActionKey(GameActions.RightHand))
         {
-            result = player.Unequip(Char.ToLower((char)key));
+            char c = key == KeyBinds.GetActionKey(GameActions.LeftHand) ? 'l' : 'r';
+            result = player.Unequip(c);
             if (result.success)
                 inputMode = InputMode.Normal;
         }

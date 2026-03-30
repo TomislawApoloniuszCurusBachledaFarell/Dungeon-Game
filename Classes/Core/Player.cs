@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Maze_Mania.Classes.Utilis;
 using Maze_Mania.Enums;
 using Maze_Mania.Interfaces.ItemInterfaces;
+using Vault_Scavanger.Classes.Core.InputHandler.ModeHandlers;
 
 namespace Maze_Mania.Classes.Core;
 
@@ -38,11 +39,11 @@ public class Player
         {
             item.PickUp(inventory);
             result.success = true;
-            result.resultMessage = $"Picked up {item.Name}";
+            result.resultMessage = InputMessages.PickedUpAnItem(item.Name);
             return result;
         }
-        result.success= false;
-        result.resultMessage = $"Somethng unexpected happened";
+        result.success= true;
+        result.resultMessage = InputMessages.UnexpectedBehaviour();
         return result ;
     }
 

@@ -12,7 +12,7 @@ using Vault_Scavanger.Enums;
 
 namespace Maze_Mania.Classes.Core.InputHandlers.ModeHandlers;
 
-public class DropHandler : IModeHandler
+public class DropSelectionHandler : IModeHandler
 {
     public InputIResult HandleKey(ConsoleKey key, Player player, Maze maze, KeyDefinitions KeyBinds, ref InputMode inputMode, ref int? tempItemIndex)
     {

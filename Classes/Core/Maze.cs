@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Maze_Mania.Classes.Utilis;
 using Maze_Mania.Interfaces.ItemInterfaces;
+using Vault_Scavanger.Classes.Core.InputHandler.ModeHandlers;
 using Vault_Scavanger.Classes.Core.VaultBuilder;
 
 namespace Maze_Mania.Classes.Core;
@@ -37,7 +38,8 @@ public class Maze
 
         if (ItemBoard[y, x].Count == 0) 
         {
-            result.resultMessage = $"There is nothing to pick up here"; 
+            result.resultMessage = InputMessages.NoItemToPickUp();
+            result.success = true;
             return result;
         }
         IItem? item = ItemBoard[y, x].FirstOrDefault();
@@ -47,9 +49,9 @@ public class Maze
         }
         else
         {
-            result.resultMessage = $"Inventory is full, cannot pick up the item";
+            result.resultMessage = InputMessages.FullInventory();
         }
-        result.success = false; 
+        result.success = true; 
         return result;
     }
 
@@ -61,12 +63,12 @@ public class Maze
         if (isAccesible(y, x - 1))
         {
             _player.setPos(x - 1, y);
-            result.resultMessage = $"Player moved left from {y} {x}";
+            result.resultMessage = InputMessages.MoveLeftSuccess(y, x);
             result.success = true ;
             return result;
         }
-        result.resultMessage = $"Player cant move left";
-        result.success = false;
+        result.resultMessage = InputMessages.MoveLeftFailure();
+        result.success = true;
         return result;
     }
 
@@ -78,12 +80,12 @@ public class Maze
         if (isAccesible(y, x + 1))
         {
             _player.setPos(x + 1, y);
-            result.resultMessage = $"Player moved right from {y} {x}";
+            result.resultMessage = InputMessages.MoveRightSuccess(y, x);
             result.success = true;
             return result;
         }
-        result.resultMessage = $"Player cant move right";
-        result.success = false;
+        result.resultMessage = InputMessages.MoveRightFailure();
+        result.success = true;
         return result;
     }
 
@@ -95,12 +97,12 @@ public class Maze
         if (isAccesible(y - 1, x))
         {
             _player.setPos(x, y - 1);
-            result.resultMessage = $"Player moved up from {y} {x}";
+            result.resultMessage = InputMessages.MoveUpSuccess(y, x);
             result.success = true;
             return result;
         }
-        result.resultMessage = $"Player cant move up";
-        result.success = false;
+        result.resultMessage = InputMessages.MoveUpFailure();
+        result.success = true;
         return result;
     }
 
@@ -112,12 +114,12 @@ public class Maze
         if (isAccesible(y + 1, x))
         {
             _player.setPos(x, y + 1);
-            result.resultMessage = $"Player moved down from {y} {x}";
+            result.resultMessage = InputMessages.MoveDownSuccess(y, x);
             result.success = true;
             return result;
         }
-        result.resultMessage = $"Player cant move down";
-        result.success = false;
+        result.resultMessage = InputMessages.MoveDownFailure();
+        result.success = true;
         return result;
     }
 
@@ -189,7 +191,7 @@ public class Maze
         /*
         if (item == null)
         {
-            result.success = false;
+            result.success = true;
             result.resultMessage = $"Player was unable to drop an item.Index {c} does not contain any item";
             return result;
         }
@@ -207,7 +209,7 @@ public class Maze
 
         if (item == null)
         {
-            result.success = false;
+            result.success = true;
             result.resultMessage = $"Player was unable to drop an item.Index {index} does not contain any item";
             return result;
         }
