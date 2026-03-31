@@ -27,11 +27,11 @@ public class EquipSelectionRule : IInteractionRule
         List<string> result = new List<string>();
         if (canInteract(maze, player, inputMode))
         {
-            List<bool> isItemTwoHanded = player.getAllItemHandability();
+            List<bool> CanSelect = player.getAllItemsSelectability();
             List<string> itemNames = player.getAllItemNames();
             for(int i = 0; i <itemNames.Count; i++)
             {
-                if (player.inventory.MaxCapacity == itemNames.Count && isItemTwoHanded[i] && player.isLeftHandOccupied() && player.isRightHandOccupied())
+                if (!CanSelect[i])
                     continue;
                 char c = (char)('0' + i);
                 result.Add(interactionMessages.SelectItemMessage(c, itemNames[i], inputMode));

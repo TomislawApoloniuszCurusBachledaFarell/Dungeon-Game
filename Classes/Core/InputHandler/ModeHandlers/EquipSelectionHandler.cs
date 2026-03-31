@@ -22,7 +22,7 @@ public class EquipSelectionHandler : IModeHandler
             int num = key - ConsoleKey.D0;
             if (num < player.inventory.items.Count) 
             {
-                result = player.inventory.items[num].TrySelecting(player, inputMode, num);
+                result = player.inventory.items[num].TrySelecting(player, ref inputMode, num);
                 if(result.success == true)
                 {
                     tempItemIndex = num;

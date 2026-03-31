@@ -9,8 +9,8 @@ namespace Maze_Mania.Classes.Items.Weapon;
 
 public class RangedWeapon : Weapon
 {
-    public RangedWeapon(string name, char symbol, int value, int damage, bool twoHanded)
-        : base(name, symbol, value, damage, twoHanded)
+    public RangedWeapon(string name, char symbol, int value, bool twoHanded, int damage)
+        : base(name, symbol, value, twoHanded, damage)
     {
 
     }

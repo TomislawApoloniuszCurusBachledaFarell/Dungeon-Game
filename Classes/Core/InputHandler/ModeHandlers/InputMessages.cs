@@ -30,7 +30,26 @@ public static class InputMessages
     public static string UnequipBothHands() => "Unequiped item from both hands";
     public static string UnequipFailure() => "You cant unequip an item";
     public static string EnteredHandSelectionAt(int index) => $"Entered hand selection at index {index}";
+    public static string NoItemsInHand(BodyParts bodyPart)
+    {
+        string partName;
+        switch (bodyPart) 
+        {
+            case BodyParts.LeftHand:
+                partName = "left hand";
+                break;
+            case BodyParts.RightHand:
+                partName = "right hand";
+                break;
+            case BodyParts.BothHands:
+                partName = "hands";
+                break;
+            default:
+                partName = "hand";
+        }
+        return $"There are no items in {partName}";
 
+    }
     public static string ActionCancelled(InputMode mode)
     {
         string action;

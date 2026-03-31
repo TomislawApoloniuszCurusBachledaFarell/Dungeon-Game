@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Vault_Scavanger.Enums;
 using Vault_Scavanger.Interfaces.CoreInterfaces;
+using Vault_Scavanger.Interfaces.ItemInterfaces;
 
 namespace Vault_Scavanger.Classes.Core.VaultBuilder.Building_Procedures;
 
@@ -17,7 +18,7 @@ public class AddItems : IBuildProcedure
     int ItemCount;
     int WeaponCount;
     List<IItem> PossibleItems;
-    List<IWeapon> PossibleWeapons;
+    List<Weapon> PossibleWeapons;
 
     public AddItems(int ItemCount, int WeaponCount = 0)
     {
@@ -25,17 +26,17 @@ public class AddItems : IBuildProcedure
         PossibleItems = new List<IItem>()
         {
             new MiscellaneousItem { Name = "Empty Sunset Sarsaparilla bottle", Symbol = 'E', Value = 2 },
-            new MiscellaneousItem { Name = "Big Empty Sunset Sarsaparilla bottle", Symbol = 'B', Value = 2, TwoHanded = true },
-            new MiscellaneousItem { Name = "Bobby Pin", Symbol = 'B', Value = 0, TwoHanded = false },
+            new MiscellaneousItem { Name = "Big Empty Sunset Sarsaparilla bottle", Symbol = 'B', Value = 2 },
+            new MiscellaneousItem { Name = "Bobby Pin", Symbol = 'B', Value = 0 },
 
         };
 
         this.WeaponCount = WeaponCount;
-        PossibleWeapons = new List<IWeapon>()
+        PossibleWeapons = new List<Weapon>()
         {
-            new RangedWeapon ("BB Gun", 'g', 36, 4, true ),
-            new RangedWeapon("10mm Pistol", '¬', 250, 22, false),
-            new MeleeWeapon("Rolling Pin", 'R', 10, 3, false),
+            new RangedWeapon ("BB Gun", 'g', 36, true, 4 ),
+            new RangedWeapon("10mm Pistol", '¬', 250, false, 22),
+            new MeleeWeapon("Rolling Pin", 'R', 10, false, 3),
         };
     }
 

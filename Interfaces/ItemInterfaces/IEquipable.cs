@@ -13,6 +13,6 @@ namespace Vault_Scavanger.Interfaces.ItemInterfaces;
 public interface IEquipable : IInventoryItem
 {
     public bool TwoHanded {  get; set; }
-    public InputIResult TryEquipping(Inventory inv, int InventoryIndex, BodyParts bodyPart);
 
+    public InputIResult Unequip(Inventory inv, BodyParts bodyPart);
 }

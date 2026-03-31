@@ -7,7 +7,9 @@ using Maze_Mania.Classes.Utilis;
 using Maze_Mania.Enums;
 using Maze_Mania.Interfaces.CoreInterfaces;
 using Vault_Scavanger.Classes.Core;
+using Vault_Scavanger.Classes.Core.InputHandler.ModeHandlers;
 using Vault_Scavanger.Enums;
+using Vault_Scavanger.Interfaces.ItemInterfaces;
 
 namespace Maze_Mania.Classes.Core.InputHandlers.ModeHandlers;
 
@@ -18,6 +20,14 @@ public class HandUnequipSelectionHandler : IModeHandler
         InputIResult result = new InputIResult();
         if (key == KeyBinds.GetActionKey(GameActions.LeftHand) || key == KeyBinds.GetActionKey(GameActions.RightHand))
         {
+            BodyParts bodyPart = key == KeyBinds.GetActionKey(GameActions.LeftHand) ? BodyParts.LeftHand : BodyParts.RightHand;
+            IEquipable? item = player.inventory.ItemInHand(bodyPart);
+            if (item != null) 
+            {
+                result.success = true;
+                result.resultMessage = InputMessages.NoItemsInHand(bodyPart);
+                return result;
+            }
             char c = key == KeyBinds.GetActionKey(GameActions.LeftHand) ? 'l' : 'r';
             result = player.Unequip(c);
             if (result.success)

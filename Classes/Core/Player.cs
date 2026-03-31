@@ -58,20 +58,12 @@ public class Player
     }
 
     public List<string> getAllItemNames() => inventory.getAllItemNames();
-    public List<bool> getAllItemHandability() => inventory.getAllItemHandability();
-
-
-    public InputIResult Equip(int? index, char key)
-    {
-        if(index == null) return new InputIResult {success = false, resultMessage = "Player did not specify which item to equip" };
-        return inventory.PlaceInHand(index.Value, key);
-    }
+    public List<bool> getAllItemsSelectability() => inventory.getAllItemsSelectability();
     public bool IsTwoHandedEquipped() => inventory.isTwoHandedEquipped();
     public InputIResult Unequip(char key) => inventory.Unequip(key);
     public bool CanEquipTwoHanded() => inventory.CanEquipTwoHanded();
     public bool isRightHandOccupied() => inventory.hands.isOccupied[1];
     public bool isLeftHandOccupied() => inventory.hands.isOccupied[0];
-    public bool isTwoHanded(int index) => index >= 0 && index < inventory.items.Count && inventory.items[index].TwoHanded;
     public DropOptions isDropPossible()
     {
         DropOptions dropOptions = new DropOptions();
@@ -86,7 +78,12 @@ public class Player
     public bool hasInventorySpace() => inventory.HasFreeSpace();
     public bool HasEquipable()
     {
-        return inventory.items.Count > 0;
+        foreach (var item in inventory.items)
+        {
+            if(item.canBeSelected(inventory))
+                return true;
+        }
+        return false;
     }
 
     public void SetUpStats(int health = 100, int strength = 10, int agility = 10, int luck = 10, int inteligence = 10, int perception = 10)

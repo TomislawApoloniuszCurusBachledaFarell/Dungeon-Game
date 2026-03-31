@@ -10,6 +10,7 @@ using Maze_Mania.Classes.Utilis;
 using Maze_Mania.Interfaces.ItemInterfaces;
 using Vault_Scavanger.Classes.Core.InputHandler.ModeHandlers;
 using Vault_Scavanger.Enums;
+using Vault_Scavanger.Interfaces.ItemInterfaces;
 
 namespace Maze_Mania.Classes.Core;
 
@@ -59,6 +60,17 @@ public class Inventory
         return item;
     }
 
+    public IEquipable? ItemInHand(BodyParts bodyParts)
+    {
+        switch (bodyParts)
+        {
+            case BodyParts.LeftHand:
+                return hands.itemSlot[0];
+            case BodyParts.RightHand:
+                return hands.itemSlot[1];
+        }
+        return null;
+    }
 
     public int getNumberOfItems() => items.Count;
     public bool areBottleCaps()
@@ -79,11 +91,11 @@ public class Inventory
         return strings;
     }
 
-    public List<bool> getAllItemHandability()
+    public List<bool> getAllItemsSelectability()
     {
         List<bool>bools = new List<bool>();
         foreach (var item in items)
-            bools.Add(item.TwoHanded);
+            bools.Add(item.canBeSelected(this));
         return bools;
     }
 
@@ -96,34 +108,6 @@ public class Inventory
         return hands.itemSlot[0].TwoHanded;
     }
 
-    public InputIResult PlaceInHand(int index, char key)
-    {
-        InputIResult result = new InputIResult();
-        result.success = false;
-        string name = items[index].Name;
-        BodyParts hand;
-        switch (key)
-        {
-            case 'l':
-                hand = BodyParts.LeftHand;
-                result.success = PlaceInCertainHand(index, 0); 
-                break;
-            case 'r':
-                hand = BodyParts.RightHand;
-                result.success = PlaceInCertainHand(index, 1);
-                break;
-            default:
-                hand = BodyParts.BothHands;
-                result.success = PlaceInBothHands(index);
-                break;
-        }
-        result.resultMessage = InputMessages.ItemWasPlacedIn(name, hand);
-        if (!result.success) 
-        {
-            result.resultMessage = InputMessages.ItemCouldntBePlaced(name, hand);
-        }
-        return result;
-    }
     public InputIResult Unequip(char key)
     {
         InputIResult result = new InputIResult();
@@ -168,58 +152,6 @@ public class Inventory
                 return result;
 
         }
-    }
-
-    private bool PlaceInBothHands(int itemId)
-    {
-        bool result = true;
-        if (itemId + 1 > items.Count) return false;
-        IInventoryItem? item = hands.itemSlot[1];
-
-        result = ForceInCertainHand(items[itemId], 1);
-        result = result && PlaceInCertainHand(itemId, 0);
-        if (item != null && !item.TwoHanded)
-            AddItem(item);
-        
-        return result;
-    }
-
-    private bool PlaceInCertainHand(int itemId, int handId)
-    {
-        if (itemId + 1 > items.Count || itemId < 0) return false;
-        IInventoryItem item = hands.itemSlot[handId];
-        hands.itemSlot[handId] = items[itemId];
-        if (item != null){
-
-            if (item.TwoHanded)
-            {
-                if (items[itemId].TwoHanded)
-                {
-                    hands.itemSlot[1 - handId] = items[itemId];
-                }
-                else
-                {
-
-                    hands.itemSlot[1 - handId] = null;
-                    hands.isOccupied[1 - handId] = false;
-                }
-            }
-
-            items[itemId] = item;
-        }
-        else
-            RemoveItem(itemId);
-        hands.isOccupied[handId] = true;
-        return true;
-    }
-
-    private bool ForceInCertainHand(IInventoryItem item, int handId)
-    {
-        if (items == null) return false;
-        hands.itemSlot[handId] = item;
-        
-        hands.isOccupied[handId] = true;
-        return true;
     }
 
     private bool GetItemFromHand(int handId)

@@ -21,18 +21,35 @@ public class BaseEquipable : IEquipable
     public int Value { get; set; }
     public bool CanPickUpWhenInventoryFull { get; } = false;
     public bool TwoHanded { get; set; }
-    public InputIResult TrySelecting(Player player, InputMode inputMode, int InventoryIndex)
+
+    public BaseEquipable(string name, char symbol, int value, bool twoHanded)
+    {
+        Name = name;
+        Symbol = symbol;
+        Value = value;
+        TwoHanded = twoHanded;
+    }
+
+    public bool canBeSelected(Inventory inv)
+    {
+        if (TwoHanded)
+        {
+            return inv.CanEquipTwoHanded();
+        }
+        return true;
+    }
+
+    public InputIResult TrySelecting(Player player, ref InputMode inputMode, int InventoryIndex)
     {
         InputIResult result = new InputIResult();
         if (TwoHanded)
         {
-            if (player.CanEquipTwoHanded())
-            {
-                result = this.TryEquipping(player.inventory, InventoryIndex, BodyParts.BothHands);
-                if (result.success)
-                    inputMode = InputMode.Normal;
-                result.success = false;
-            }
+
+            result = this.TryEquipping(player.inventory, InventoryIndex, BodyParts.BothHands);
+            if (result.success)
+                inputMode = InputMode.Normal;
+            result.success = false;
+
         }
         else
         {
@@ -45,7 +62,7 @@ public class BaseEquipable : IEquipable
     public InputIResult TryEquipping(Inventory inv ,int InventoryIndex, BodyParts bodyPart)
     {
         InputIResult result = new InputIResult();
-        if(bodyPart == BodyParts.BothHands && InventoryIndex + 1 > inv.MaxCapacity)
+        if (!canBeSelected(inv))
         {
             result.success = false;
             result.resultMessage = InputMessages.FullInventory();
