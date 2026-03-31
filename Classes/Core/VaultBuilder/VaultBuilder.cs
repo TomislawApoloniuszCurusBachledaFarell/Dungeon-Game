@@ -50,11 +50,11 @@ public class VaultBuilder
             //new EmptyVaultProcedure(),
             new AddCentralRoom(8, 15),
 
-            new AddRooms(20, 4, 7),
+            new AddRooms(15, 4, 7),
 
-            new AddCorridors(60),
+            new AddCorridors(14),
             new AddItems(12, 6),
-            new AddCurrencies(10)
+            new AddCurrencies(5)
         };
         foreach (IBuildProcedure Procedure in NormalVault) 
         {

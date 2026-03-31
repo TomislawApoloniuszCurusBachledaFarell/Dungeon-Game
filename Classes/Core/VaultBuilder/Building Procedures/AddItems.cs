@@ -34,7 +34,7 @@ public class AddItems : IBuildProcedure
         PossibleWeapons = new List<IWeapon>()
         {
             new RangedWeapon ("BB Gun", 'g', 36, 4, true ),
-            new RangedWeapon("10mm Pistol", 'P', 250, 22, false),
+            new RangedWeapon("10mm Pistol", '¬', 250, 22, false),
             new MeleeWeapon("Rolling Pin", 'R', 10, 3, false),
         };
     }

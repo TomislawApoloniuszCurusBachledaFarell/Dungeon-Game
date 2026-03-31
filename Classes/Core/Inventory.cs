@@ -8,29 +8,31 @@ using System.Threading.Tasks;
 using Maze_Mania.Classes.Items.Currency;
 using Maze_Mania.Classes.Utilis;
 using Maze_Mania.Interfaces.ItemInterfaces;
+using Vault_Scavanger.Classes.Core.InputHandler.ModeHandlers;
+using Vault_Scavanger.Enums;
 
 namespace Maze_Mania.Classes.Core;
 
 public class Inventory
 {
-    public List<IEquiplable> items;
+    public List<IInventoryItem> items;
     public Currency currency;
     public Hands hands;
     public int MaxCapacity = 10;
     public Inventory()
     {
-        items = new List<IEquiplable>();
+        items = new List<IInventoryItem>();
         currency = new Currency();
         this.hands = new Hands();
     }
-    public bool AddItem(IEquiplable item) {
+    public bool AddItem(IInventoryItem item) {
         if (items.Capacity == MaxCapacity) return false;
         items.Add(item);
         return true;
     }
-    public IEquiplable? RemoveItem(int i)
+    public IInventoryItem? RemoveItem(int i)
     {
-        IEquiplable? item = null;
+        IInventoryItem? item = null;
         if (i <  items.Count && i >= 0)
         {
             item = items[i];
@@ -38,7 +40,6 @@ public class Inventory
         }
         return item;
     }
-
     public IItem? RemoveCurrency(char currency)
     {
         IItem? item = null;
@@ -86,7 +87,7 @@ public class Inventory
         return bools;
     }
 
-    public bool CanEquipTwoHanded(int index)
+    public bool CanEquipTwoHanded()
     {
         return HasFreeSpace() || !hands.isOccupied[0] || !hands.isOccupied[1] || isTwoHandedEquipped();
     }
@@ -100,26 +101,26 @@ public class Inventory
         InputIResult result = new InputIResult();
         result.success = false;
         string name = items[index].Name;
-        string hand;
+        BodyParts hand;
         switch (key)
         {
             case 'l':
-                hand = "left hand";
+                hand = BodyParts.LeftHand;
                 result.success = PlaceInCertainHand(index, 0); 
                 break;
             case 'r':
-                hand = "right hand";
+                hand = BodyParts.RightHand;
                 result.success = PlaceInCertainHand(index, 1);
                 break;
             default:
-                hand = "both hands";
+                hand = BodyParts.BothHands;
                 result.success = PlaceInBothHands(index);
                 break;
         }
-        result.resultMessage = $"{name} was placed in {hand}";
+        result.resultMessage = InputMessages.ItemWasPlacedIn(name, hand);
         if (!result.success) 
         {
-            result.resultMessage = $"Couldn't place {name} in {hand}";
+            result.resultMessage = InputMessages.ItemCouldntBePlaced(name, hand);
         }
         return result;
     }
@@ -173,7 +174,7 @@ public class Inventory
     {
         bool result = true;
         if (itemId + 1 > items.Count) return false;
-        IEquiplable? item = hands.itemSlot[1];
+        IInventoryItem? item = hands.itemSlot[1];
 
         result = ForceInCertainHand(items[itemId], 1);
         result = result && PlaceInCertainHand(itemId, 0);
@@ -186,7 +187,7 @@ public class Inventory
     private bool PlaceInCertainHand(int itemId, int handId)
     {
         if (itemId + 1 > items.Count || itemId < 0) return false;
-        IEquiplable item = hands.itemSlot[handId];
+        IInventoryItem item = hands.itemSlot[handId];
         hands.itemSlot[handId] = items[itemId];
         if (item != null){
 
@@ -212,7 +213,7 @@ public class Inventory
         return true;
     }
 
-    private bool ForceInCertainHand(IEquiplable item, int handId)
+    private bool ForceInCertainHand(IInventoryItem item, int handId)
     {
         if (items == null) return false;
         hands.itemSlot[handId] = item;
@@ -226,7 +227,7 @@ public class Inventory
 
         if (!hands.isOccupied[handId] || !HasFreeSpace()) return false;
 
-        IEquiplable? item = hands.itemSlot[(handId)];
+        IInventoryItem? item = hands.itemSlot[(handId)];
         if(item == null || !AddItem(item)) return false;
         if (isTwoHandedEquipped())
         {

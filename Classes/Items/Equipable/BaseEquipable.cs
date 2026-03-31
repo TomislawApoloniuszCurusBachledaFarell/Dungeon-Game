@@ -1,0 +1,79 @@
+﻿using Maze_Mania.Classes.Core;
+using Maze_Mania.Classes.Utilis;
+using Maze_Mania.Enums;
+using Maze_Mania.Interfaces.ItemInterfaces;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection.Metadata;
+using System.Text;
+using System.Threading.Tasks;
+using Vault_Scavanger.Classes.Core.InputHandler.ModeHandlers;
+using Vault_Scavanger.Enums;
+using Vault_Scavanger.Interfaces.ItemInterfaces;
+
+namespace Vault_Scavanger.Classes.Items.Equipable;
+
+public class BaseEquipable : IEquipable
+{
+    public string Name { get; set; }
+    public char Symbol { get; set; }
+    public int Value { get; set; }
+    public bool CanPickUpWhenInventoryFull { get; } = false;
+    public bool TwoHanded { get; set; }
+    public InputIResult TrySelecting(Player player, InputMode inputMode, int InventoryIndex)
+    {
+        InputIResult result = new InputIResult();
+        if (TwoHanded)
+        {
+            if (player.CanEquipTwoHanded())
+            {
+                result = this.TryEquipping(player.inventory, InventoryIndex, BodyParts.BothHands);
+                if (result.success)
+                    inputMode = InputMode.Normal;
+                result.success = false;
+            }
+        }
+        else
+        {
+            inputMode = InputMode.HandSelection;
+            result.success = true;
+        }
+        return result;
+    }
+
+    public InputIResult TryEquipping(Inventory inv ,int InventoryIndex, BodyParts bodyPart)
+    {
+        InputIResult result = new InputIResult();
+        if(bodyPart == BodyParts.BothHands && InventoryIndex + 1 > inv.MaxCapacity)
+        {
+            result.success = false;
+            result.resultMessage = InputMessages.FullInventory();
+            return result;
+        }
+        inv.RemoveItem(InventoryIndex);
+
+        if((bodyPart & BodyParts.LeftHand) != 0)
+        {
+            IInventoryItem? item0 = inv.hands.itemSlot[0];
+            inv.hands.itemSlot[0] = this;
+            inv.hands.isOccupied[0] = true;
+            if (item0 != null)
+                item0.PickUp(inv);
+        }
+
+        if ((bodyPart & BodyParts.RightHand) != 0)
+        {
+            IInventoryItem? item1 = inv.hands.itemSlot[1];
+            inv.hands.itemSlot[1] = this;
+            inv.hands.isOccupied[1] = true;
+            if (item1 != null)
+                item1.PickUp(inv);
+        }
+        result.success = true;
+        result.resultMessage = InputMessages.ItemWasPlacedIn(Name, bodyPart);
+        return result;
+    }
+
+    public void PickUp(Inventory inv) => inv.AddItem(this);
+}

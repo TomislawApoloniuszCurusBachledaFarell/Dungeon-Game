@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Maze_Mania.Classes.Core;
+using Maze_Mania.Classes.Utilis;
+using Maze_Mania.Enums;
+using Maze_Mania.Interfaces.ItemInterfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Maze_Mania.Classes.Core;
-using Maze_Mania.Interfaces.ItemInterfaces;
 
 namespace Maze_Mania.Classes.Items.Weapon;
 
@@ -24,5 +26,25 @@ public abstract class Weapon : IWeapon
         Value = value;
         Damage = damage;
         TwoHanded = twoHanded;
+    }
+
+    public InputIResult TrySelecting(Player player, InputMode inputMode, int InventoryIndex) 
+    {
+        InputIResult result = new InputIResult();
+        if (TwoHanded)
+        {
+            if (player.CanEquipTwoHanded())
+            {
+                result = player.Equip(InventoryIndex, '?');
+                if (result.success)
+                    inputMode = InputMode.Normal;
+            }
+        }
+        else
+        {
+            inputMode = InputMode.HandSelection;
+            result.success = true;
+        }
+        return result;
     }
 }

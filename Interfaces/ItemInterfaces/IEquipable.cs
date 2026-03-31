@@ -1,14 +1,18 @@
-﻿using System;
+﻿using Maze_Mania.Classes.Core;
+using Maze_Mania.Classes.Utilis;
+using Maze_Mania.Interfaces.ItemInterfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Maze_Mania.Classes;
+using Vault_Scavanger.Enums;
 
-namespace Maze_Mania.Interfaces.ItemInterfaces;
+namespace Vault_Scavanger.Interfaces.ItemInterfaces;
 
-public interface IEquiplable : IItem
+public interface IEquipable : IInventoryItem
 {
-    public int Value { get; }
-    bool TwoHanded { get; }
+    public bool TwoHanded {  get; set; }
+    public InputIResult TryEquipping(Inventory inv, int InventoryIndex, BodyParts bodyPart);
+
 }

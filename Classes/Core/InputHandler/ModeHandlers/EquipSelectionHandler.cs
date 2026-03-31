@@ -7,6 +7,7 @@ using Maze_Mania.Classes.Utilis;
 using Maze_Mania.Enums;
 using Maze_Mania.Interfaces.CoreInterfaces;
 using Vault_Scavanger.Classes.Core;
+using Vault_Scavanger.Classes.Core.InputHandler.ModeHandlers;
 using Vault_Scavanger.Enums;
 
 namespace Maze_Mania.Classes.Core.InputHandlers.ModeHandlers;
@@ -19,39 +20,33 @@ public class EquipSelectionHandler : IModeHandler
         if (ConsoleKey.D0 <= key && key <= ConsoleKey.D9)
         {
             int num = key - ConsoleKey.D0;
-            if (player.isTwoHanded(num))
+            if (num < player.inventory.items.Count) 
             {
-                if (player.CanEquipTwoHanded(num)) {
-                    result = player.Equip(num, '?');
-                    if(result.success)
-                        inputMode = InputMode.Normal;
-                }
-            }
-            else
-            {
-                if (num < player.getAllItemNames().Count)
+                result = player.inventory.items[num].TrySelecting(player, inputMode, num);
+                if(result.success == true)
                 {
                     tempItemIndex = num;
-                    inputMode = InputMode.HandSelection;
-                    result.resultMessage = $"Entered hand selections to equip item at {key} index";
-
+                    result.resultMessage = InputMessages.EnteredHandSelectionAt(num);
+                    return result;
                 }
                 else
                 {
-                    result.resultMessage = $"Player does not have any items at index {key} to equip";
+                    result.success = true;
+                    return result;
                 }
             }
+           
         }
         else
         {
             if (key == keyBinds.GetActionKey(GameActions.CancelAction))
             {
                 inputMode = InputMode.Normal;
-                result.resultMessage = "Cancelled equipping items";
+                result.resultMessage = InputMessages.ActionCancelled(inputMode);
             }
             else 
             {
-                result.resultMessage = "This key has no function here";
+                result.resultMessage = InputMessages.NoFunction();
 
             }
         }

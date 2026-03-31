@@ -8,6 +8,7 @@ using Maze_Mania.Classes.Utilis;
 using Maze_Mania.Enums;
 using Maze_Mania.Interfaces.CoreInterfaces;
 using Vault_Scavanger.Classes.Core;
+using Vault_Scavanger.Classes.Core.InputHandler.ModeHandlers;
 using Vault_Scavanger.Enums;
 
 namespace Maze_Mania.Classes.Core.InputHandlers.ModeHandlers;
@@ -31,7 +32,7 @@ public class DropSelectionHandler : IModeHandler
             if (key == KeyBinds.GetActionKey(GameActions.CancelAction))
             {
                 result.success = true;
-                result.resultMessage = "Cancelled dropping items";
+                result.resultMessage = InputMessages.ActionCancelled(inputMode);
                 inputMode = InputMode.Normal;
             }
             else if ((char)key == BottleCap.getChar || (char)key == GoldBar.getChar)
@@ -42,7 +43,7 @@ public class DropSelectionHandler : IModeHandler
             }
             else
             {
-                result.resultMessage = "This key has no function here";
+                result.resultMessage = InputMessages.NoFunction();
             }
         }
         result.success = true;

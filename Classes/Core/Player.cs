@@ -68,7 +68,7 @@ public class Player
     }
     public bool IsTwoHandedEquipped() => inventory.isTwoHandedEquipped();
     public InputIResult Unequip(char key) => inventory.Unequip(key);
-    public bool CanEquipTwoHanded(int index) => inventory.CanEquipTwoHanded(index);
+    public bool CanEquipTwoHanded() => inventory.CanEquipTwoHanded();
     public bool isRightHandOccupied() => inventory.hands.isOccupied[1];
     public bool isLeftHandOccupied() => inventory.hands.isOccupied[0];
     public bool isTwoHanded(int index) => index >= 0 && index < inventory.items.Count && inventory.items[index].TwoHanded;
