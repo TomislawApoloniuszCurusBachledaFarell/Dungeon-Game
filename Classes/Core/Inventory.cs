@@ -64,6 +64,7 @@ public class Inventory
     {
         switch (bodyParts)
         {
+            case BodyParts.BothHands:
             case BodyParts.LeftHand:
                 return hands.itemSlot[0];
             case BodyParts.RightHand:
@@ -108,68 +109,6 @@ public class Inventory
         return hands.itemSlot[0].TwoHanded;
     }
 
-    public InputIResult Unequip(char key)
-    {
-        InputIResult result = new InputIResult();
-        switch (key)
-        {
-            case 'l':
-                result.resultMessage = "Unequiped item from left hand";
-                result.success = GetItemFromHand(0);
-                if (!result.success)
-                {
-                    if (!hands.isOccupied[1])
-                    {
-                        result.resultMessage = "There is no items to be unequiped from left hand";
-                    }
-                    else
-                    {
-                        result.resultMessage = "There is no space in inventory to unequip the item to";
-                    }
-                }
-                return result;
-
-            case 'r':
-                result.resultMessage = "Unequiped item from right hand";
-                result.success = GetItemFromHand(1);
-                if (!result.success)
-                {
-                    if (!hands.isOccupied[1])
-                    {
-                        result.resultMessage = "There is no items to be unequiped from left hand";
-                    }
-                    else
-                    {
-                        result.resultMessage = "There is no space in inventory to unequip the item to";
-                    }
-                }
-
-                return result;
-
-            default:
-                result.resultMessage = "This key has no function here";
-                result.success = false;
-                return result;
-
-        }
-    }
-
-    private bool GetItemFromHand(int handId)
-    {
-
-        if (!hands.isOccupied[handId] || !HasFreeSpace()) return false;
-
-        IInventoryItem? item = hands.itemSlot[(handId)];
-        if(item == null || !AddItem(item)) return false;
-        if (isTwoHandedEquipped())
-        {
-            hands.itemSlot[1 - handId] = null;
-            hands.isOccupied[1 - handId] = false;
-        }
-        hands.itemSlot[handId] = null;
-        hands.isOccupied[handId] = false;
-        return true;
-    } 
     public bool HasFreeSpace() => items.Count < MaxCapacity;
 
     public class Currency

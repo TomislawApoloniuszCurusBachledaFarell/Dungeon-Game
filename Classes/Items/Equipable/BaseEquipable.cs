@@ -91,6 +91,33 @@ public class BaseEquipable : IEquipable
         result.resultMessage = InputMessages.ItemWasPlacedIn(Name, bodyPart);
         return result;
     }
-
+    public InputIResult Unequip(Inventory inv, BodyParts bodyPart)
+    {
+        InputIResult result = new InputIResult();
+        bool wasUnequiped = false;
+        if ((bodyPart & BodyParts.LeftHand) > 0)
+        {
+            inv.hands.itemSlot[0] = null;
+            inv.hands.isOccupied[0] = false;
+            if (!wasUnequiped)
+            {
+                inv.items.Add(this);
+                wasUnequiped = true;
+            }
+        }
+        if((bodyPart & BodyParts.RightHand) > 0)
+        {
+            inv.hands.itemSlot[1] = null;
+            inv.hands.isOccupied[1] = false;
+            if (!wasUnequiped)
+            {
+                inv.items.Add(this);
+                wasUnequiped= true;
+            }
+        }
+        result.resultMessage = InputMessages.UnequipedItem(bodyPart);
+        result.success = true ;
+        return result;
+    }
     public void PickUp(Inventory inv) => inv.AddItem(this);
 }

@@ -27,7 +27,6 @@ public static class InputMessages
     public static string EquipSuccess() => "Select an item to equip";
     public static string EquipFailure() => "You can't equip an item";
     public static string UnequipSuccess() => "Select an Item to unequip";
-    public static string UnequipBothHands() => "Unequiped item from both hands";
     public static string UnequipFailure() => "You cant unequip an item";
     public static string EnteredHandSelectionAt(int index) => $"Entered hand selection at index {index}";
     public static string NoItemsInHand(BodyParts bodyPart)
@@ -46,9 +45,9 @@ public static class InputMessages
                 break;
             default:
                 partName = "hand";
+                break;
         }
         return $"There are no items in {partName}";
-
     }
     public static string ActionCancelled(InputMode mode)
     {
@@ -59,7 +58,13 @@ public static class InputMessages
                 action = "dropping an item";
                 break;
             case InputMode.Equip:
-                action = "cancelled selecting items";
+                action = "selecting items";
+                break;
+            case InputMode.HandSelection:
+                action = "selecting hand to equip an item";
+                break;
+            case InputMode.HandUnequipSelection:
+                action = "unequiping items";
                 break;
             default:
                 action = "an action";
@@ -111,6 +116,27 @@ public static class InputMessages
         return $"{name} couldn't placed {WhereWasPlaced}";
 
     }
+    public static string UnequipedItem(BodyParts bodyPart)
+    {
+        string partName;
+        switch (bodyPart)
+        {
+            case BodyParts.LeftHand:
+                partName = "left hand";
+                break;
+            case BodyParts.RightHand:
+                partName = "right hand";
+                break;
+            case BodyParts.BothHands:
+                partName = "both hands";
+                break;
+            default:
+                partName = "hand";
+                break;
+        }
+        return $"Item was unequiped from {partName}";
+    }
+
     public static string ItemHasNoUse() => "You can't use this item";
     public static string ExitGame() => "Exiting the game";
     public static string NoFunction() => "This key has no function here";

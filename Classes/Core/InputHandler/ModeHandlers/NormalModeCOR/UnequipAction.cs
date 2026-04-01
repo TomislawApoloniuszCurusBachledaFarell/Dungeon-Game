@@ -31,9 +31,14 @@ public class UnequipAction : NormalHandler
             }
             else
             {
-                player.Unequip('l');
-                player.Unequip('r');
-                result.resultMessage = InputMessages.UnequipBothHands();
+                BodyParts bodyPart = 0;
+                if (player.IsTwoHandedEquipped())
+                    bodyPart = BodyParts.BothHands;
+                else if (player.isLeftHandOccupied())
+                    bodyPart = BodyParts.LeftHand;
+                else if (player.isRightHandOccupied())
+                    bodyPart = BodyParts.RightHand;
+                result = player.inventory.ItemInHand(bodyPart).Unequip(player.inventory, bodyPart);
             }
 
         }

@@ -60,8 +60,6 @@ public class Player
     public List<string> getAllItemNames() => inventory.getAllItemNames();
     public List<bool> getAllItemsSelectability() => inventory.getAllItemsSelectability();
     public bool IsTwoHandedEquipped() => inventory.isTwoHandedEquipped();
-    public InputIResult Unequip(char key) => inventory.Unequip(key);
-    public bool CanEquipTwoHanded() => inventory.CanEquipTwoHanded();
     public bool isRightHandOccupied() => inventory.hands.isOccupied[1];
     public bool isLeftHandOccupied() => inventory.hands.isOccupied[0];
     public DropOptions isDropPossible()

@@ -22,25 +22,24 @@ public class HandUnequipSelectionHandler : IModeHandler
         {
             BodyParts bodyPart = key == KeyBinds.GetActionKey(GameActions.LeftHand) ? BodyParts.LeftHand : BodyParts.RightHand;
             IEquipable? item = player.inventory.ItemInHand(bodyPart);
-            if (item != null) 
+            if (item == null) 
             {
                 result.success = true;
                 result.resultMessage = InputMessages.NoItemsInHand(bodyPart);
                 return result;
             }
-            char c = key == KeyBinds.GetActionKey(GameActions.LeftHand) ? 'l' : 'r';
-            result = player.Unequip(c);
+            result = item.Unequip(player.inventory, bodyPart);
             if (result.success)
                 inputMode = InputMode.Normal;
         }
         else if (key == KeyBinds.GetActionKey(GameActions.CancelAction))
         {
-            result.resultMessage = "Cancelled selecting hand to unequip items from";
+            result.resultMessage = InputMessages.ActionCancelled(inputMode);
             inputMode = InputMode.Normal;
         }
         else
         {
-            result.resultMessage = "This key has no function here";
+            result.resultMessage = InputMessages.NoFunction();
         }
         result.success = true;
         return result;

@@ -39,12 +39,12 @@ public class HandSelectionHandler : IModeHandler
         }
         else if (key == KeyBinds.GetActionKey(GameActions.CancelAction))
         {
-            result.resultMessage = "Cancelled selecting hands";
+            result.resultMessage = InputMessages.ActionCancelled(inputMode);
             inputMode = InputMode.Equip;
         }
         else
         {
-            result.resultMessage = "This key has no function here";
+            result.resultMessage = InputMessages.NoFunction();
 
         }
         result.success = true;

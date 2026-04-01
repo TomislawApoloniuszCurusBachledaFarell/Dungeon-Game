@@ -129,13 +129,10 @@ public class Maze
         bool b = y >= 0;
         bool c = x < board.GetLength(1);
         bool e = y < board.GetLength(0);
-        bool d;
-        if( a && b && c && e)
-            d = board[y, x] != '█';
-        else 
+        if (a && b && c && e)
+            return board[y, x] != '█';
+        else
             return false;
-
-        return x >= 0 && y >= 0 && y < board.GetLength(0) && x < board.GetLength(1) && board[y, x] != '█';
     }
 
     public int addItem(IItem item, int y, int x)
