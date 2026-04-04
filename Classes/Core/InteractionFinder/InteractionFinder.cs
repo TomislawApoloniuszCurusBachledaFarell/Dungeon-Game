@@ -5,8 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Vault_Scavanger.Classes.Core.InteractionFinder;
 using Vault_Scavanger.Classes.Core.InteractionFinder.InteractionRules;
+using Vault_Scavanger.Classes.Utilis;
 using Vault_Scavanger.Interfaces.CoreInterfaces;
 
 namespace Vault_Scavanger.Classes.Core.InteractionsBuilder;

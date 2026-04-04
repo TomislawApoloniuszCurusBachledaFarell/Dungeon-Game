@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Maze_Mania.Classes.Utilis;
 using Maze_Mania.Enums;
 using Microsoft.VisualBasic;
+using Vault_Scavanger.Classes.Utilis.Extensions;
 
 namespace Maze_Mania.Classes.Core;
 

@@ -5,9 +5,10 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using Vault_Scavanger.Classes.Core;
 using Vault_Scavanger.Enums;
 
-namespace Vault_Scavanger.Classes.Core.InteractionFinder;
+namespace Vault_Scavanger.Classes.Utilis;
 
 public class InteractionMessages
 {
@@ -47,14 +48,14 @@ public class InteractionMessages
                 interaction = "drop";
                 break;
             case InputMode.Equip:
-                interaction = "equip";
+                interaction = "use";
                 break;
             default:
                 interaction = "select";
                 break;
 
         }
-        return $"Press {key} to  {interaction} {name}";
+        return $"Press {key} to {interaction} {name}";
     }
 
     public string EquipMessage()

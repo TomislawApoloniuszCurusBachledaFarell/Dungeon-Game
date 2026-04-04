@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Vault_Scavanger.Enums;
 
-namespace Vault_Scavanger.Classes.Core.InputHandler.ModeHandlers;
+namespace Vault_Scavanger.Classes.Utilis;
 
 public static class InputMessages
 {
@@ -136,7 +136,7 @@ public static class InputMessages
         }
         return $"Item was unequiped from {partName}";
     }
-
+    public static string DrugWasTaken(string name) => $"You have taken {name}";
     public static string ItemHasNoUse() => "You can't use this item";
     public static string ExitGame() => "Exiting the game";
     public static string NoFunction() => "This key has no function here";

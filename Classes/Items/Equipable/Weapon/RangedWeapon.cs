@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Maze_Mania.Interfaces;
 
-namespace Maze_Mania.Classes.Items.Weapon;
+namespace Vault_Scavanger.Classes.Items.Equipable.Weapon;
 
 public class RangedWeapon : Weapon
 {

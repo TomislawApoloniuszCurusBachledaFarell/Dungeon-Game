@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 using Maze_Mania.Classes.Utilis;
 using Maze_Mania.Enums;
 using Maze_Mania.Interfaces.ItemInterfaces;
-using Vault_Scavanger.Classes.Core.InputHandler.ModeHandlers;
+using Vault_Scavanger.Classes.Core;
+using Vault_Scavanger.Classes.Utilis;
 
 namespace Maze_Mania.Classes.Core;
 
@@ -15,14 +16,14 @@ public class Player
 {
     public int xPos { get; private set; }
     public int yPos { get; private set; }
-    public List<Stats> stats { get; private set; }
+    public StatManager stats { get; private set; }
     public Inventory inventory;
     public Player((int yPos, int xPos) Position)
     {
         this.xPos = Position.xPos;
         this.yPos = Position.yPos;
-        stats = new List<Stats>();
-        SetUpStats();
+        stats = new StatManager();
+
         inventory = new Inventory();
     }
 
@@ -31,7 +32,7 @@ public class Player
         this.xPos = xPos;
         this.yPos = yPos;
     }
-
+    public void UpdatePlayer() => stats.UpdateStats();
     public InputIResult pickUpItem(IItem item)
     {
         InputIResult result = new InputIResult();
@@ -46,7 +47,7 @@ public class Player
         result.resultMessage = InputMessages.UnexpectedBehaviour();
         return result ;
     }
-
+   
     public IItem? dropItem(int index)
     {
         return inventory.RemoveItem(index);
@@ -84,15 +85,5 @@ public class Player
         return false;
     }
 
-    public void SetUpStats(int health = 100, int strength = 10, int agility = 10, int luck = 10, int inteligence = 10, int perception = 10)
-    {
-        stats.Add(new Stats("Health", health, 1));
-        stats.Add(new Stats("Strength", strength, 2));
-
-        stats.Add(new Stats("Perception", perception, 2));
-        stats.Add(new Stats("Inteligence", inteligence, 2));
-
-        stats.Add(new Stats("Agility", agility, 2));
-        stats.Add(new Stats("Luck", luck, 2));
-    }
+    
 };

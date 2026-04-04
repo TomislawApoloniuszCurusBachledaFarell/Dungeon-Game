@@ -8,7 +8,7 @@ using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
-using Vault_Scavanger.Classes.Core.InputHandler.ModeHandlers;
+using Vault_Scavanger.Classes.Utilis;
 using Vault_Scavanger.Enums;
 using Vault_Scavanger.Interfaces.ItemInterfaces;
 
@@ -16,12 +16,12 @@ namespace Vault_Scavanger.Classes.Items.Equipable;
 
 public class BaseEquipable : IEquipable
 {
-    public string Name { get; set; }
+    public virtual string Name { get; set; }
     public char Symbol { get; set; }
-    public int Value { get; set; }
+    public virtual int Value { get; set; }
     public bool CanPickUpWhenInventoryFull { get; } = false;
     public bool TwoHanded { get; set; }
-
+ 
     public BaseEquipable(string name, char symbol, int value, bool twoHanded)
     {
         Name = name;

@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Maze_Mania.Classes.Items.Weapon;
+namespace Vault_Scavanger.Classes.Items.Equipable.Weapon;
+
 using Maze_Mania.Interfaces;
 
 public class MeleeWeapon : Weapon

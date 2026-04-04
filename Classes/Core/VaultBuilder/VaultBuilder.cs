@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Maze_Mania.Classes.Core;
 using Maze_Mania.Interfaces.ItemInterfaces;
 using Vault_Scavanger.Classes.Core.VaultBuilder.Building_Procedures;
-using Vault_Scavanger.Classes.Utilis;
 using Vault_Scavanger.Classes.Utilis.Rooms;
 using Vault_Scavanger.Enums;
 using Vault_Scavanger.Interfaces.CoreInterfaces;
@@ -53,7 +52,7 @@ public class VaultBuilder
             new AddRooms(15, 4, 7),
 
             new AddCorridors(14),
-            new AddItems(12, 6),
+            new AddItems(12, 20),
             new AddCurrencies(5)
         };
         foreach (IBuildProcedure Procedure in NormalVault) 

@@ -63,6 +63,10 @@ public class GameLoop
 
     private GameState updateGameState()
     {
+        if(inputMode == InputMode.Normal)
+        {
+            player.UpdatePlayer();
+        }
         List<string>? Interaction = findInteractions();
         GameState state = new GameState(maze.board, player, Interaction, inputMode, inputMessage);
         return state;

@@ -11,6 +11,7 @@ public class Stats
     public string Name;
     public int Value;
     public int MaxValue;
+    public int GetValue => Math.Min(Value, MaxValue);
     private int BarLength = 10;
     private int MaxNameLen = 12;
 
@@ -31,11 +32,11 @@ public class Stats
         sb.Append($"{nameToPrint}".PadRight(MaxNameLen) + ": ");
         if(MaxValue > 0)
         {
-            int colouredBar = (int)Math.Ceiling((double)BarLength * ((double)Value / (double)MaxValue));
+            int colouredBar = (int)Math.Ceiling((double)BarLength * ((double)GetValue / (double)MaxValue));
             sb.Append(new string('■', colouredBar));
             sb.Append(new string('□', BarLength - colouredBar));
         }
-        sb.Append($" {Value}/{MaxValue}");
+        sb.Append($" {GetValue}/{MaxValue}");
         return sb.ToString();
     }
 }

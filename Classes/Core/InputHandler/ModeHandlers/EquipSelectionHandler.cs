@@ -7,7 +7,7 @@ using Maze_Mania.Classes.Utilis;
 using Maze_Mania.Enums;
 using Maze_Mania.Interfaces.CoreInterfaces;
 using Vault_Scavanger.Classes.Core;
-using Vault_Scavanger.Classes.Core.InputHandler.ModeHandlers;
+using Vault_Scavanger.Classes.Utilis;
 using Vault_Scavanger.Enums;
 
 namespace Maze_Mania.Classes.Core.InputHandlers.ModeHandlers;

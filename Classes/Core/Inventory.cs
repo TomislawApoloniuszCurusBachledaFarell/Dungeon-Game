@@ -31,6 +31,11 @@ public class Inventory
         items.Add(item);
         return true;
     }
+    public void RemoveItem(IInventoryItem item)
+    {
+        items.Remove(item);
+    }
+
     public IInventoryItem? RemoveItem(int i)
     {
         IInventoryItem? item = null;

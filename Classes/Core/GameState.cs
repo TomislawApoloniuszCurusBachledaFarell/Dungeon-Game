@@ -47,7 +47,12 @@ public class GameState
         GoldBars = player.inventory.currency.GoldBars;
         this.Interaction = Interaction;
         Mode = mode;
-        stats = player.stats;
+        stats = new List<Stats>();
+        foreach (Stats entry in player.stats.Stats.Values)
+        {
+            stats.Add(entry);
+
+        }
         this.message = message;
 
     }

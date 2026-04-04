@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Vault_Scavanger.Classes.Utilis;
+using Vault_Scavanger.Classes.Utilis.Extensions;
 using Vault_Scavanger.Classes.Utilis.Rooms;
 using Vault_Scavanger.Enums;
 using Vault_Scavanger.Interfaces.CoreInterfaces;

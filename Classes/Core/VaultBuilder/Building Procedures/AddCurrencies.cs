@@ -1,6 +1,7 @@
 ﻿using Maze_Mania.Classes.Items.Currency;
-using Maze_Mania.Classes.Items.Miscellaneous;
-using Maze_Mania.Classes.Items.Weapon;
+using Maze_Mania.Classes.Items.Other;
+using Vault_Scavanger.Classes.Items.Equipable.Weapon;
+
 using Maze_Mania.Interfaces.ItemInterfaces;
 using System;
 using System.Collections.Generic;

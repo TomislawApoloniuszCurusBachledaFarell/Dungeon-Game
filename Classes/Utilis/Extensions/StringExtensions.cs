@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Maze_Mania.Enums;
 
-namespace Maze_Mania.Classes.Utilis;
+namespace Vault_Scavanger.Classes.Utilis.Extensions;
 
 public static class StringExtension
 {

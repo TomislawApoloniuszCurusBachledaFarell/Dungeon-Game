@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Vault_Scavanger.Classes.Utilis;
+namespace Vault_Scavanger.Classes.Utilis.Extensions;
 
 public static class ListExtensions
 {
