@@ -20,6 +20,7 @@ public class VaultBuilder
     public int Y;
     public char[,] board;
     public List<IItem>[,] ItemBoard;
+    public List<Enemy> enemies;
     public Random rand;
     public bool hasCentral = false;
     public Features features = Features.None;
@@ -27,6 +28,7 @@ public class VaultBuilder
     {
         rooms = new List<Room>();
         corridors = new List<Corridor>();
+        enemies = new List<Enemy>();
         board = new char[Y, X];
         ItemBoard = new List<IItem>[Y, X];
         for (int y = 0; y < Y; y++)
@@ -50,7 +52,7 @@ public class VaultBuilder
             new AddCentralRoom(8, 15),
 
             new AddRooms(15, 4, 7),
-
+            new AddEnemies(2),
             new AddCorridors(14),
             new AddItems(12, 20),
             new AddCurrencies(5)
@@ -143,6 +145,17 @@ public class VaultBuilder
         ItemBoard[Tile.y, Tile.x].Add(item);
         return 1;
     }
+    public int addEnemy(Enemy enemy, (int y, int x) Tile)
+    {
+        if (!isAccesible(Tile.y, Tile.x))
+        {
+            return 0;
+        }
+
+        enemies.Add(enemy);
+        return 1;
+    }
+
 
     private bool isAccesible(int y, int x)
     {

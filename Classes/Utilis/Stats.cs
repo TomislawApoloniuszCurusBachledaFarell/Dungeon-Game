@@ -15,10 +15,10 @@ public class Stats
     private int BarLength = 10;
     private int MaxNameLen = 12;
 
-    public Stats(string name, int maxValue, int valueToMaxRatio = 1)
+    public Stats(string name, int maxValue, int value)
     {
         Name = name;
-        Value = maxValue/valueToMaxRatio;
+        Value = value;
         MaxValue = maxValue;
     }
     public override string ToString()

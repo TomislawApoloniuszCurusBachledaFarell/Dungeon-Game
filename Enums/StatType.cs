@@ -9,9 +9,12 @@ namespace Vault_Scavanger.Enums;
 public enum StatType
 {
     health,
+    maxHealth,
     strength,
     inteligence,
     perception,
     luck,
-    agility
+    agility,
+    armour,
+    baseDmg,
 }

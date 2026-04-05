@@ -16,5 +16,5 @@ public interface IInventoryItem : IItem
     public int Value { get; }
     public bool canBeSelected(Inventory inv);
     public InputIResult TrySelecting(Player player, ref InputMode inputMode, int InventoryIndex);
-    public InputIResult TryEquipping(Inventory inv, int InventoryIndex, BodyParts bodyPart);
+    public InputIResult TryEquipping(Player player, int InventoryIndex, BodyParts bodyPart);
 }

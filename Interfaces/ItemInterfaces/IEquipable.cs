@@ -14,5 +14,5 @@ public interface IEquipable : IInventoryItem
 {
     public bool TwoHanded {  get; set; }
 
-    public InputIResult Unequip(Inventory inv, BodyParts bodyPart);
+    public InputIResult Unequip(Player player, BodyParts bodyPart);
 }

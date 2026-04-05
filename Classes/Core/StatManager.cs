@@ -14,18 +14,10 @@ public class StatManager
 {
     public Dictionary<StatType, Stats> Stats;
     public List<ActiveEffect> CurrentEffects;
-    public StatManager(int health = 100, int strength = 10, int agility = 10, int luck = 10, int inteligence = 10, int perception = 10)
+    public StatManager()
     {
         Stats = new Dictionary<StatType, Stats>();
         CurrentEffects = new List<ActiveEffect>();
-        Stats.Add(StatType.health, new Stats("Health", health, 1));
-        Stats.Add(StatType.strength, new Stats("Strength", strength, 2));
-
-        Stats.Add(StatType.perception, new Stats("Perception", perception, 2));
-        Stats.Add(StatType.inteligence, new Stats("Inteligence", inteligence, 2));
-
-        Stats.Add(StatType.agility, new Stats("Agility", agility, 2));
-        Stats.Add(StatType.luck, new Stats("Luck", luck, 2));
     }
     
     public void UpdateStats()
@@ -43,7 +35,16 @@ public class StatManager
             RemoveEffect(effect);
         }
     }
-
+    public void AddMaxStatEffect(Effect effect) => ChangeMaxStat(effect.Type, effect.Value);
+    public void CancelMaxStatEffect(Effect effect)
+    {
+        ChangeMaxStat(effect.Type, (-1) * effect.Value);
+        Stats[effect.Type].Value = Math.Min(Stats[effect.Type].MaxValue, Stats[effect.Type].Value);
+    }
+    private void ChangeMaxStat(StatType type, int val)
+    {
+        Stats[type].MaxValue += val;
+    }
     public void ModifyStat(StatType type, int val)
     {
         Stats[type].Value += val;
@@ -68,15 +69,60 @@ public class StatManager
     {
         foreach (Effect effect in effects)
         {
-            if (Stats[effect.Type].Value + effect.Value > Stats[effect.Type].MaxValue)
-                effect.Value = Stats[effect.Type].MaxValue - Stats[effect.Type].Value;
-            ModifyStat(effect.Type, effect.Value);
+            AddEffect(effect);
         }
+    }
+    public void AddEffect(Effect effect)
+    {
+        if (Stats[effect.Type].Value + effect.Value > Stats[effect.Type].MaxValue)
+            effect.Value = Stats[effect.Type].MaxValue - Stats[effect.Type].Value;
+        ModifyStat(effect.Type, effect.Value);
+    }
+    public void RemoveEffect(Effect effect)
+    {
+        ModifyStat(effect.Type, (-1) * effect.Value);
+
     }
     public void RemoveEffect(ActiveEffect source) 
     {
         foreach(Effect effect in source.effects)
-            ModifyStat(effect.Type, (-1) * effect.Value);
+            RemoveEffect(effect);
         CurrentEffects.Remove(source);
+    }
+
+
+    public void AddHealth(int health = 100)
+    {
+        Stats.Add(StatType.health, new Stats("Health", health, health));
+    }
+    public void AddStrength(int maxStrength = 10, int strenght = -1)
+    {
+        if (strenght == -1) strenght = maxStrength / 2;
+        Stats.Add(StatType.strength, new Stats("Strength", maxStrength, strenght));
+    }
+    public void AddPerception(int maxPerception = 10, int perception = -1)
+    {
+        if (perception == -1) perception = maxPerception / 2;
+        Stats.Add(StatType.perception, new Stats("Perception", maxPerception, perception));
+    }
+    public void AddInteligence(int maxInteligence = 10, int inteligence = -1)
+    {
+        if (inteligence == -1) inteligence = maxInteligence / 2;
+        Stats.Add(StatType.inteligence, new Stats("Inteligence", maxInteligence, inteligence));
+    }
+    public void AddAgility(int maxAgility = 10, int Agility = -1)
+    {
+        if (Agility == -1) Agility = maxAgility / 2;
+        Stats.Add(StatType.agility, new Stats("Agility", maxAgility, Agility));
+    }
+    public void AddLuck(int maxLuck = 10, int Luck = -1)
+    {
+        if (Luck == -1) Luck = maxLuck / 2;
+        Stats.Add(StatType.luck, new Stats("Luck", maxLuck, Luck));
+    }
+    public void AddArmour(int maxArmour = 10, int Armour = -1)
+    {
+        if (Armour == -1) Armour = maxArmour / 2;
+        Stats.Add(StatType.armour, new Stats("Armour", maxArmour, Armour));
     }
 }

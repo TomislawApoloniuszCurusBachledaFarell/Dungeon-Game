@@ -28,7 +28,7 @@ public class HandUnequipSelectionHandler : IModeHandler
                 result.resultMessage = InputMessages.NoItemsInHand(bodyPart);
                 return result;
             }
-            result = item.Unequip(player.inventory, bodyPart);
+            result = item.Unequip(player, bodyPart);
             if (result.success)
                 inputMode = InputMode.Normal;
         }

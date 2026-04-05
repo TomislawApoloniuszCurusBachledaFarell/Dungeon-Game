@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Maze_Mania.Classes.Utilis;
 using Maze_Mania.Interfaces.ItemInterfaces;
+using Vault_Scavanger.Classes.Core;
 using Vault_Scavanger.Classes.Core.VaultBuilder;
 using Vault_Scavanger.Classes.Utilis;
 
@@ -16,6 +17,7 @@ public class Maze
 {
     public char[,] board { get; }
     public  List<IItem>[,] ItemBoard { get; private set; }
+    public List<Enemy> Enemies { get; private set; }
     public Player _player;
     public int X { get; private set; }
     public int Y { get; private set; }
@@ -24,6 +26,7 @@ public class Maze
     {
         board = builder.board;
         ItemBoard = builder.ItemBoard;
+        Enemies = builder.enemies;
         X = builder.X;
         Y = builder.Y;
 

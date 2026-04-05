@@ -30,7 +30,7 @@ public class HandSelectionHandler : IModeHandler
             {
                 bodyPart = BodyParts.LeftHand;
             }
-            result = item.TryEquipping(player.inventory, (int) tempItemIndex, bodyPart);
+            result = item.TryEquipping(player, (int) tempItemIndex, bodyPart);
             if (result.success)
             {
                 inputMode = InputMode.Normal;

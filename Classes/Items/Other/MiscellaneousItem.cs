@@ -21,5 +21,5 @@ public class MiscellaneousItem : IInventoryItem
     public void PickUp(Inventory inv) => inv.AddItem(this);
     public bool canBeSelected(Inventory inv) => false;
     public InputIResult TrySelecting(Player player, ref InputMode inputIMode, int num) => new InputIResult {success = false, resultMessage = InputMessages.ItemHasNoUse() };
-    public InputIResult TryEquipping(Inventory inv, int num, BodyParts Bodypart) => new InputIResult {success = false, resultMessage = InputMessages.UnexpectedBehaviour() };
+    public InputIResult TryEquipping(Player player, int num, BodyParts Bodypart) => new InputIResult {success = false, resultMessage = InputMessages.UnexpectedBehaviour() };
 }

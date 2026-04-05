@@ -68,7 +68,7 @@ public class GameLoop
             player.UpdatePlayer();
         }
         List<string>? Interaction = findInteractions();
-        GameState state = new GameState(maze.board, player, Interaction, inputMode, inputMessage);
+        GameState state = new GameState(maze, player, Interaction, inputMode, inputMessage);
         return state;
     }
 

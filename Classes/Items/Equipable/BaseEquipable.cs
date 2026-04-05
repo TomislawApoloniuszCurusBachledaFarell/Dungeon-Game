@@ -39,13 +39,13 @@ public class BaseEquipable : IEquipable
         return true;
     }
 
-    public InputIResult TrySelecting(Player player, ref InputMode inputMode, int InventoryIndex)
+    public virtual InputIResult TrySelecting(Player player, ref InputMode inputMode, int InventoryIndex)
     {
         InputIResult result = new InputIResult();
         if (TwoHanded)
         {
 
-            result = this.TryEquipping(player.inventory, InventoryIndex, BodyParts.BothHands);
+            result = this.TryEquipping(player, InventoryIndex, BodyParts.BothHands);
             if (result.success)
                 inputMode = InputMode.Normal;
             result.success = false;
@@ -59,59 +59,66 @@ public class BaseEquipable : IEquipable
         return result;
     }
 
-    public InputIResult TryEquipping(Inventory inv ,int InventoryIndex, BodyParts bodyPart)
+    public virtual InputIResult TryEquipping(Player player ,int InventoryIndex, BodyParts bodyPart)
     {
         InputIResult result = new InputIResult();
-        if (!canBeSelected(inv))
+        if (!canBeSelected(player.inventory))
         {
             result.success = false;
             result.resultMessage = InputMessages.FullInventory();
             return result;
         }
-        inv.RemoveItem(InventoryIndex);
+        player.inventory.RemoveItem(InventoryIndex);
 
         if((bodyPart & BodyParts.LeftHand) != 0)
         {
-            IInventoryItem? item0 = inv.hands.itemSlot[0];
-            inv.hands.itemSlot[0] = this;
-            inv.hands.isOccupied[0] = true;
+            IEquipable? item0 = player.inventory.hands.itemSlot[0];
             if (item0 != null)
-                item0.PickUp(inv);
+                item0.Unequip(player, BodyParts.LeftHand);
+
+            player.inventory.hands.itemSlot[0] = this;
+            player.inventory.hands.isOccupied[0] = true;
+
         }
 
         if ((bodyPart & BodyParts.RightHand) != 0)
         {
-            IInventoryItem? item1 = inv.hands.itemSlot[1];
-            inv.hands.itemSlot[1] = this;
-            inv.hands.isOccupied[1] = true;
+            IEquipable? item1 = player.inventory.hands.itemSlot[1];
             if (item1 != null)
-                item1.PickUp(inv);
+                item1.Unequip(player, BodyParts.LeftHand);
+
+            player.inventory.hands.itemSlot[1] = this;
+            player.inventory.hands.isOccupied[1] = true;
         }
         result.success = true;
         result.resultMessage = InputMessages.ItemWasPlacedIn(Name, bodyPart);
         return result;
     }
-    public InputIResult Unequip(Inventory inv, BodyParts bodyPart)
+    public virtual InputIResult Unequip(Player player, BodyParts bodyPart)
     {
         InputIResult result = new InputIResult();
         bool wasUnequiped = false;
+        if (TwoHanded)
+        {
+            bodyPart = BodyParts.BothHands;
+        }
         if ((bodyPart & BodyParts.LeftHand) > 0)
         {
-            inv.hands.itemSlot[0] = null;
-            inv.hands.isOccupied[0] = false;
+            player.inventory.hands.itemSlot[0] = null;
+            player.inventory.hands.isOccupied[0] = false;
             if (!wasUnequiped)
             {
-                inv.items.Add(this);
+                player.inventory.items.Add(this);
                 wasUnequiped = true;
             }
         }
         if((bodyPart & BodyParts.RightHand) > 0)
         {
-            inv.hands.itemSlot[1] = null;
-            inv.hands.isOccupied[1] = false;
+            player.inventory.hands.itemSlot[1] = null;
+            player.inventory.hands.isOccupied[1] = false;
             if (!wasUnequiped)
             {
-                inv.items.Add(this);
+                player.inventory.items.Add(this);
                 wasUnequiped= true;
             }
         }

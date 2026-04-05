@@ -39,7 +39,7 @@ public class UnequipAction : NormalHandler
                     bodyPart = BodyParts.LeftHand;
                 else if (player.isRightHandOccupied())
                     bodyPart = BodyParts.RightHand;
-                result = player.inventory.ItemInHand(bodyPart).Unequip(player.inventory, bodyPart);
+                result = player.inventory.ItemInHand(bodyPart).Unequip(player, bodyPart);
             }
 
         }

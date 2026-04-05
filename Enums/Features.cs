@@ -11,5 +11,6 @@ public enum Features
     None = 0,
     PickingUp = 1,
     Equipping = 2,
-    Attacking = 4
+    Attacking = 4,
+    Enemies = 8,
 }

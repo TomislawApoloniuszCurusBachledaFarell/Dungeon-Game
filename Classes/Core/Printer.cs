@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Maze_Mania.Classes.Utilis;
 using Maze_Mania.Enums;
 using Microsoft.VisualBasic;
+using Vault_Scavanger.Classes.Core;
 using Vault_Scavanger.Classes.Utilis.Extensions;
 
 namespace Maze_Mania.Classes.Core;
@@ -97,7 +98,6 @@ public static class Printer
         sb.Clear();
 
     }
-
     private static List<string> MakeLines(List<string> strings, int width, bool numbering = false, TextAlignment textAlignment = TextAlignment.Centre)
     {
         var lines = new List<string>();
@@ -154,7 +154,7 @@ public static class Printer
         lines.Add(new String('=', width));
 
         lines.Add("Possible interactions".PadCentre(width));
-        lines.AddRange(MakeLines(Interactions, width, true, TextAlignment.Left));
+        lines.AddRange(MakeLines(Interactions, width, false, TextAlignment.Left));
         while(lines.Count < 15 + 8)
         {
             lines.Add($" ".PadRight(width));
@@ -172,18 +172,21 @@ public static class Printer
         {
             for (int j = 0; j < width; j++)
             {
-                if (gameState.PlayerPos.Y != i || gameState.PlayerPos.X != j)
+                if (gameState.PlayerPos.Y == i && gameState.PlayerPos.X == j)
                 {
-                    sb.Append(gameState.board[i, j]);
+                    sb.Append(gameState.PlayerPos.Symbol);
                 }
                 else
                 {
-                    sb.Append(gameState.PlayerPos.Symbol);
+                    Enemy enemy = gameState.Enemies.FirstOrDefault(e => e.yPos == i && e.xPos == j);
+                    if (enemy != null)
+                        sb.Append($"\u001b[31m{enemy.Symbol}\u001b[32m");
+                    else
+                        sb.Append(gameState.board[i, j]);
                 }
             }
             lines.Add(sb.ToString());
             sb.Clear();
-
         }
         return lines;
     }

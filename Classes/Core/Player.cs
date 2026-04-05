@@ -23,10 +23,19 @@ public class Player
         this.xPos = Position.xPos;
         this.yPos = Position.yPos;
         stats = new StatManager();
-
+        setUpStats();
         inventory = new Inventory();
     }
 
+    private void setUpStats()
+    {
+        stats.AddHealth(100);
+        stats.AddStrength();
+        stats.AddPerception();
+        stats.AddInteligence();
+        stats.AddAgility();
+        stats.AddLuck();
+    }
     public void setPos(int xPos, int yPos)
     {
         this.xPos = xPos;

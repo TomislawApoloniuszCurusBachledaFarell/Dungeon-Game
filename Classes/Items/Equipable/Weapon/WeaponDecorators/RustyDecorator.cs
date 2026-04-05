@@ -12,6 +12,6 @@ public class RustyDecorator : WeaponDecorator
     {
     }
     public override string Name => $"Rusty {base.Name}";
-    public override int Value => base.Value * (1/2);
-    public override int Damage => Math.Max(1, base.Damage -(1/3) * base.Damage);
+    public override int Value => (int)(base.Value * (0.5));
+    public override int Damage => Math.Max(1,(int)( base.Damage - (0.33) * base.Damage));
 }

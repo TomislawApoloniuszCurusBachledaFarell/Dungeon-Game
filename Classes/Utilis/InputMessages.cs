@@ -15,7 +15,7 @@ public static class InputMessages
     public static string DropFailure() => "You dont have items to drop";
     public static string MoveUpSuccess(int y, int x) => $"Player moved up from {y} {x}";
     public static string MoveUpFailure() => $"Player can't move up";
-    public static string MoveDownSuccess(int y, int x) => $"Player moved Down from {y} {x}";
+    public static string MoveDownSuccess(int y, int x) => $"Player moved down from {y} {x}";
     public static string MoveDownFailure() => $"Player can't move down";
     public static string MoveLeftSuccess(int y, int x) => $"Player moved left from {y} {x}";
     public static string MoveLeftFailure() => $"Player can't move left";

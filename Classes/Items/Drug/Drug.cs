@@ -22,6 +22,6 @@ public abstract class Drug : IInventoryItem
     public bool canBeSelected(Inventory inv) => true;
     public List<Effect> effects;
     public abstract InputIResult TrySelecting(Player player, ref InputMode inputMode, int temp); 
-    public InputIResult TryEquipping(Inventory inv, int num, BodyParts Bodypart) => new InputIResult { success = false, resultMessage = InputMessages.UnexpectedBehaviour() };
+    public InputIResult TryEquipping(Player player, int num, BodyParts Bodypart) => new InputIResult { success = false, resultMessage = InputMessages.UnexpectedBehaviour() };
 
 }
