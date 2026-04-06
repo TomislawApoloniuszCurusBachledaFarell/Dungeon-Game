@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Vault_Scavanger.Classes.Core;
 using Vault_Scavanger.Enums;
 
 namespace Vault_Scavanger.Classes.Utilis;
@@ -29,6 +30,16 @@ public static class InputMessages
     public static string UnequipSuccess() => "Select an Item to unequip";
     public static string UnequipFailure() => "You cant unequip an item";
     public static string EnteredHandSelectionAt(int index) => $"Entered hand selection at index {index}";
+    public static string EnteredHandSelection() => "Select item from hand to attack with";
+    public static string AttackItemSelected(string? name)
+    {
+        if (name == null)
+            name = "bare fists";
+        return $"Attacking with {name}";
+    }
+    public static string DealtDamage(string usedItem, int dmg, string target = "enemy") =>
+        $"You used {usedItem} dealing {dmg} to {target}";
+    public static string EnemyDefeated(string name) => $"{name} was slained";
     public static string NoItemsInHand(BodyParts bodyPart)
     {
         string partName;
@@ -66,6 +77,9 @@ public static class InputMessages
             case InputMode.HandUnequipSelection:
                 action = "unequiping items";
                 break;
+            case InputMode.Combat:
+                action = "fighting";
+                break;
             default:
                 action = "an action";
                 break;
@@ -73,7 +87,6 @@ public static class InputMessages
 
         return $"Cancelled {action}";
     }
-
     public static string ItemWasPlacedIn(string name, BodyParts bodyPart)
     {
         string WhereWasPlaced;
@@ -94,7 +107,6 @@ public static class InputMessages
         }
         return $"{name} was placed {WhereWasPlaced}";
     }
-
     public static string ItemCouldntBePlaced(string name, BodyParts bodyPart)
     {
         string WhereWasPlaced;
@@ -137,6 +149,7 @@ public static class InputMessages
         return $"Item was unequiped from {partName}";
     }
     public static string DrugWasTaken(string name) => $"You have taken {name}";
+    public static string CombatStarted(string prevMsg, string name) => $"{prevMsg} and started a Combat with a {name}";
     public static string ItemHasNoUse() => "You can't use this item";
     public static string ExitGame() => "Exiting the game";
     public static string NoFunction() => "This key has no function here";

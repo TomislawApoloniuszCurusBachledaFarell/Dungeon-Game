@@ -38,7 +38,7 @@ public class InteractionMessages
     {
         return $"Press {keys.GetActionKey(GameActions.Drop)} to drop an item";
     }
-
+    public string SelectAttackType(char key, string name) => $"Press {key} to make perform {name}";
     public string SelectItemMessage(char key, string name, InputMode mode) 
     {
         string interaction = "";
@@ -66,6 +66,7 @@ public class InteractionMessages
     public string LeftHandMessage(InputMode inputMode)
     {
         string interaction = "";
+        string additionalInfo = "";
         switch (inputMode)
         {
             case InputMode.HandSelection:
@@ -74,16 +75,21 @@ public class InteractionMessages
             case InputMode.HandUnequipSelection:
                 interaction = "unequip it from your";
                 break;
+            case InputMode.AttackHandSelection:
+                interaction = "attack with your";
+                additionalInfo = "item";
+                break;
             default:
                 interaction = "select";
                 break;
         }
-        return $"Press {keys.GetActionKey(GameActions.LeftHand)} to {interaction} left hand";
+        return $"Press {keys.GetActionKey(GameActions.LeftHand)} to {interaction} left hand {additionalInfo}";
     }
 
     public string RightHandMessage(InputMode inputMode) 
     {
         string interaction = "";
+        string additionalInfo = "";
         switch (inputMode)
         {
             case InputMode.HandSelection:
@@ -92,11 +98,15 @@ public class InteractionMessages
             case InputMode.HandUnequipSelection:
                 interaction = "unequip it from your";
                 break;
+            case InputMode.AttackHandSelection:
+                interaction = "attack with your";
+                additionalInfo = "item";
+                break;
             default:
                 interaction = "select";
                 break;
         }
-        return $"Press {keys.GetActionKey(GameActions.RightHand)} to {interaction} right hand";
+        return $"Press {keys.GetActionKey(GameActions.RightHand)} to {interaction} right hand {additionalInfo}";
     }
 
     public string UnequipMessage()

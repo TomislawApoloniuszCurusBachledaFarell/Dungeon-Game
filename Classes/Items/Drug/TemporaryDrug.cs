@@ -17,7 +17,7 @@ public class TemporaryDrug : Drug
     public string Category;
     public int EffectDuration = 10;
     public override InputIResult TrySelecting(Player player, ref InputMode inputIMode, int num) {
-        player.stats.AddEffect(effects, Category, EffectDuration);
+        player.Stats.AddEffect(effects, Category, EffectDuration);
         player.inventory.RemoveItem(this);
         inputIMode = InputMode.Normal;
         return new InputIResult { success = true, resultMessage = InputMessages.DrugWasTaken(Name) };

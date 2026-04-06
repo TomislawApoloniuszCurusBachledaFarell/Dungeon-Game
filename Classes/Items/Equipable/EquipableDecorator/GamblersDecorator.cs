@@ -26,7 +26,7 @@ public class GamblersDecorator : EquipableDecorator
         InputIResult result = base.TryEquipping(player, InventoryIndex, bodyPart);
         if (result.success)
         {
-            player.stats.AddEffect(effect);
+            player.Stats.AddEffect(effect);
         }
         return result;
     }
@@ -35,7 +35,7 @@ public class GamblersDecorator : EquipableDecorator
         InputIResult result = base.Unequip(player, bodyPart);
         if (result.success)
         {
-            player.stats.RemoveEffect(effect);
+            player.Stats.RemoveEffect(effect);
         }
         return result;
     }

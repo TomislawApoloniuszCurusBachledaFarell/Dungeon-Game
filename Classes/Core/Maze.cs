@@ -1,12 +1,13 @@
-﻿using System;
+﻿using Maze_Mania.Classes.Utilis;
+using Maze_Mania.Enums;
+using Maze_Mania.Interfaces.ItemInterfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using Maze_Mania.Classes.Utilis;
-using Maze_Mania.Interfaces.ItemInterfaces;
 using Vault_Scavanger.Classes.Core;
 using Vault_Scavanger.Classes.Core.VaultBuilder;
 using Vault_Scavanger.Classes.Utilis;
@@ -217,5 +218,23 @@ public class Maze
         result.success = true;
         result.resultMessage = $"{item.Name} was dropped at {_player.yPos}, {_player.xPos}";
         return result;
+    }
+
+    public Enemy? GetEnemyFrom(int Y, int X)
+    {
+
+        foreach (Enemy enemy in Enemies)
+        {
+            if (enemy.yPos == Y && enemy.xPos == X)
+            {
+                return enemy;
+            }
+        }
+        return null;
+    }
+
+    public void KillEnemy(Enemy enemy)
+    {
+        Enemies.Remove(enemy);
     }
 }

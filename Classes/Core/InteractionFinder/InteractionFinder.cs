@@ -21,12 +21,14 @@ public class InteractionFinder
         interactions = new List<IInteractionRule>();
 
         interactions.Add(new PickUpRule());
+        interactions.Add(new CombatRule());
         interactions.Add(new EquipRule());
         interactions.Add(new DropRule());
         interactions.Add(new UnequipRule());
         interactions.Add(new DropSelectionRule());
         interactions.Add(new EquipSelectionRule());
         interactions.Add(new EquipHandSelectionRule());
+        interactions.Add(new AttackHandSelectionRule());
         interactions.Add(new UnequipHandSelectionRule());
         interactions.Add(new CancelRule());
         interactions.Add(new ExitGameRule());

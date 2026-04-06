@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Vault_Scavanger.Classes.Utilis;
 using Vault_Scavanger.Enums;
+using Vault_Scavanger.Interfaces.CoreInterfaces;
 using Vault_Scavanger.Interfaces.ItemInterfaces;
 
 namespace Vault_Scavanger.Classes.Items.Equipable;
@@ -29,6 +30,8 @@ public class BaseEquipable : IEquipable
         Value = value;
         TwoHanded = twoHanded;
     }
+
+    public BaseEquipable() { }
 
     public bool canBeSelected(Inventory inv)
     {
@@ -125,6 +128,10 @@ public class BaseEquipable : IEquipable
         result.resultMessage = InputMessages.UnequipedItem(bodyPart);
         result.success = true ;
         return result;
+    }
+    public virtual int Accept(IAttackType attack, ITarget attacker, ITarget defender)
+    {
+        return attack.Visit(this, attacker, defender);
     }
     public void PickUp(Inventory inv) => inv.AddItem(this);
 }

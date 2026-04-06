@@ -24,8 +24,8 @@ public class KeyDefinitions
         keyBindings.Add(GameActions.PickUp, ConsoleKey.E);
         keyBindings.Add(GameActions.LeftHand, ConsoleKey.L);
         keyBindings.Add(GameActions.RightHand, ConsoleKey.R);
-
         keyBindings.Add(GameActions.Unequip, ConsoleKey.G);
+
         keyBindings.Add(GameActions.GameExit, ConsoleKey.X);
         keyBindings.Add(GameActions.CancelAction, ConsoleKey.N);
     }

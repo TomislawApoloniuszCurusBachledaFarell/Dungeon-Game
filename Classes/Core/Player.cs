@@ -9,39 +9,42 @@ using Maze_Mania.Enums;
 using Maze_Mania.Interfaces.ItemInterfaces;
 using Vault_Scavanger.Classes.Core;
 using Vault_Scavanger.Classes.Utilis;
+using Vault_Scavanger.Enums;
+using Vault_Scavanger.Interfaces.CoreInterfaces;
+using Vault_Scavanger.Interfaces.ItemInterfaces;
 
 namespace Maze_Mania.Classes.Core;
 
-public class Player
+public class Player : ITarget
 {
     public int xPos { get; private set; }
     public int yPos { get; private set; }
-    public StatManager stats { get; private set; }
+    public StatManager Stats { get; set; }
     public Inventory inventory;
     public Player((int yPos, int xPos) Position)
     {
         this.xPos = Position.xPos;
         this.yPos = Position.yPos;
-        stats = new StatManager();
+        Stats = new StatManager();
         setUpStats();
         inventory = new Inventory();
     }
 
     private void setUpStats()
     {
-        stats.AddHealth(100);
-        stats.AddStrength();
-        stats.AddPerception();
-        stats.AddInteligence();
-        stats.AddAgility();
-        stats.AddLuck();
+        Stats.AddHealth(100);
+        Stats.AddStrength();
+        Stats.AddPerception();
+        Stats.AddInteligence();
+        Stats.AddAgility();
+        Stats.AddLuck();
     }
     public void setPos(int xPos, int yPos)
     {
         this.xPos = xPos;
         this.yPos = yPos;
     }
-    public void UpdatePlayer() => stats.UpdateStats();
+    public void UpdatePlayer() => Stats.UpdateStats();
     public InputIResult pickUpItem(IItem item)
     {
         InputIResult result = new InputIResult();
@@ -94,5 +97,11 @@ public class Player
         return false;
     }
 
-    
+    public bool CanSelectAttackHand()
+    {
+        bool doesntNeeedTo = IsTwoHandedEquipped() || 
+            (inventory.ItemInHand(BodyParts.LeftHand) == null && inventory.ItemInHand(BodyParts.RightHand) == null);
+        return !doesntNeeedTo;  
+    }
+
 };

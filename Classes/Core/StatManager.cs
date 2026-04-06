@@ -35,6 +35,7 @@ public class StatManager
             RemoveEffect(effect);
         }
     }
+    public int GetStatValue(StatType type) => Stats[type].Value;
     public void AddMaxStatEffect(Effect effect) => ChangeMaxStat(effect.Type, effect.Value);
     public void CancelMaxStatEffect(Effect effect)
     {

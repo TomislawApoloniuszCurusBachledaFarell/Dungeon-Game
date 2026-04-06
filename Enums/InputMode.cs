@@ -11,5 +11,7 @@ public enum InputMode {
     Drop, 
     Equip, 
     HandSelection,
-    HandUnequipSelection
+    HandUnequipSelection,
+    AttackHandSelection,
+    Combat
 }

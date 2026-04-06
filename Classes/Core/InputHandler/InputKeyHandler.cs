@@ -18,9 +18,10 @@ public class InputHandler
 {
     public Dictionary<InputMode, IModeHandler> ModeHandlers = new()
     {
-        
-        [InputMode.Normal] = new MovementAction(),
 
+        [InputMode.Normal] = new MovementAction(),
+        [InputMode.Combat] = new CombatHandler(),
+        [InputMode.AttackHandSelection] = new AttackHandSelectionHandler(),
         [InputMode.Drop] = new DropSelectionHandler(),
         [InputMode.Equip] = new EquipSelectionHandler(),
         [InputMode.HandSelection] = new HandSelectionHandler(),

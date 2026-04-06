@@ -51,7 +51,7 @@ public class GameState
         Mode = mode;
         stats = new List<Stats>();
         Enemies = maze.Enemies;
-        foreach (Stats entry in player.stats.Stats.Values)
+        foreach (Stats entry in player.Stats.Stats.Values)
         {
             stats.Add(entry);
 

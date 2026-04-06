@@ -25,7 +25,7 @@ public class LifegiverDecorator : EquipableDecorator
         InputIResult result = base.TryEquipping(player, InventoryIndex, bodyPart);
         if (result.success)
         {
-            player.stats.AddMaxStatEffect(effect);
+            player.Stats.AddMaxStatEffect(effect);
         }
         return result;
     }
@@ -34,7 +34,7 @@ public class LifegiverDecorator : EquipableDecorator
         InputIResult result = base.Unequip(player, bodyPart);
         if (result.success)
         {
-            player.stats.CancelMaxStatEffect(effect);
+            player.Stats.CancelMaxStatEffect(effect);
         }
         return result;
     }
