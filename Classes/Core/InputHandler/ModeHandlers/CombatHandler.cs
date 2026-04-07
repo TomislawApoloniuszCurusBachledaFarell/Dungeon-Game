@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Vault_Scavanger.Classes.Core.AttackType;
 using Vault_Scavanger.Classes.Items.Equipable;
-using Vault_Scavanger.Classes.Utilis;
+using Vault_Scavanger.Classes.Utilis.Messages;
 using Vault_Scavanger.Enums;
 using Vault_Scavanger.Interfaces.CoreInterfaces;
 using Vault_Scavanger.Interfaces.ItemInterfaces;
@@ -29,7 +29,7 @@ public class CombatHandler : IModeHandler
             return result;
         }
         IAttackType attackType;
-        if (key > ConsoleKey.D0 && key < ConsoleKey.D9)
+        if (key >= ConsoleKey.D0 && key <= ConsoleKey.D9)
         {
             int index = key - ConsoleKey.D0;
             if (index < AttackTypeManager.AttackTypes.Count)
@@ -57,22 +57,28 @@ public class CombatHandler : IModeHandler
             return result;
         }
 
-        result = ResolveCombat(player, enemy, attackType, handIndex);
-        if (enemy.Stats.GetStatValue(StatType.health) < 0)
+        result = ResolveCombatPlayer(player, enemy, attackType, handIndex);
+        if (!enemy.IsAlive())
         {
             result.resultMessage = $"{result.resultMessage}. {InputMessages.EnemyDefeated(enemy.Name)}";
             maze.KillEnemy(enemy);
             inputMode = InputMode.Normal;
+            return result;
         }
-        else
+
+        result.bonusMessage = ResolveCombatEnemy(player, enemy);
+        if(!player.IsAlive())
         {
-            if(player.CanSelectAttackHand())
-                inputMode= InputMode.AttackHandSelection;
+            result.bonusMessage = $"{result.bonusMessage}. You couldnt survive this attack";
+            inputMode = InputMode.PlayerDeath;
+            return result;
         }
+        if (player.CanSelectAttackHand())
+            inputMode = InputMode.AttackHandSelection;
         return result;
     }
 
-    private InputIResult ResolveCombat(Player player, Enemy enemy, IAttackType attackType, int? handIndex)
+    private InputIResult ResolveCombatPlayer(Player player, Enemy enemy, IAttackType attackType, int? handIndex)
     {
         IEquipable? item;
         if (player.CanSelectAttackHand())
@@ -83,20 +89,28 @@ public class CombatHandler : IModeHandler
         {
             item = player.inventory.ItemInHand(BodyParts.LeftHand);
         }
-        BaseEquipable attackItem = new BaseEquipable() { Name = "bare fist" };
-        if(item != null)
+        if (item == null)
         {
-            attackItem = (BaseEquipable)item;
+            item = new BaseEquipable() { Name = "bare fist" };
         }
-        string itemName = attackItem.Name;
-        int dmg = attackItem.Accept(attackType, player, enemy);
-        enemy.Stats.ModifyStat(StatType.health, (-1) * dmg);
-        InputIResult result = new InputIResult();
-        result.resultMessage = InputMessages.DealtDamage(itemName, dmg, enemy.Name);
 
+        string itemName = item.Name;
+        string combatResult = item.Accept(attackType, player, enemy);
+
+
+        InputIResult result = new InputIResult();
+        result.resultMessage = combatResult;
+        
         result.success = true;
         return result;
 
     } 
     
+    private string ResolveCombatEnemy(Player player, Enemy enemy)
+    {
+        BaseEquipable unarmed = new BaseEquipable();
+        string combatResult = unarmed.Accept(AttackTypeManager.GetAttack(0), enemy, player);
+;       
+        return combatResult;
+    }
 }

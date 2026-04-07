@@ -68,10 +68,11 @@ public static class Printer
         List<string> leftPannel = MakeLeftPannel(gameState.Interaction, gameState.stats, SidePanelWidth, height);
 
         height = leftPannel.Count;
-        List<string> messageBox = MakeMessageBox(gameState.message, leftPannel.Count, gameState.board.GetLength(0), gameState.board.GetLength(1));
 
         List<string> rightPannel = MakeRightPannel(gameState.itemList, gameState.hands, gameState.BottleCaps,gameState.GoldBars, SidePanelWidth, height);
         List<string> centrePannel = MakeCentrePannel(gameState);
+        List<string> messageBox = MakeMessageBox(gameState.message.resultMessage, leftPannel.Count, centrePannel.Count, gameState.board.GetLength(1));
+
 
         //sb.Append(new String('=', WindowWidth));
         for (int i = 0; i < leftPannel.Count; i++)
@@ -100,6 +101,7 @@ public static class Printer
     }
     private static List<string> MakeLines(List<string> strings, int width, bool numbering = false, TextAlignment textAlignment = TextAlignment.Centre)
     {
+        if (strings == null) return new List<string>();
         var lines = new List<string>();
         if (strings == null) return lines;
         int i = 0;
@@ -141,15 +143,16 @@ public static class Printer
         }
         return lines;
     }
-    private static List<string> MakeLeftPannel(List<string> Interactions, List<Stats> stats, int width, int height)
+    private static List<string> MakeLeftPannel(List<string> Interactions, List<string> stats, int width, int height)
     {
 
         List<string> lines = new List<string>();
         lines.Add(new string('=', width));
         lines.Add("Player Information".PadCentre(width));
+
         foreach (var entry in stats)
         {
-            lines.Add(entry.ToString().PadRight(width));
+            lines.Add(entry.PadRight(width));
         }
         lines.Add(new String('=', width));
 
@@ -165,32 +168,103 @@ public static class Printer
     private static List<string> MakeCentrePannel(GameState gameState)
     {
         List<string> lines = new List<string>();
-        StringBuilder sb = new StringBuilder();
         int height = gameState.board.GetLength(0);
         int width = gameState.board.GetLength(1);
-        for (int i = 0; i < height; i++)
+        if(gameState.Mode == InputMode.PlayerDeath)
         {
-            for (int j = 0; j < width; j++)
+            lines.Add(new string('█', width));
+
+            for (int i = lines.Count; i < height - 6; i++)
             {
-                if (gameState.PlayerPos.Y == i && gameState.PlayerPos.X == j)
+                lines.Add($"{"█".PadRight(width - 1)}█");
+            }
+            lines.Add($"█{new string('-', width - 2)}█");
+
+            List<string> Message = MakeLines(new List<string>() { gameState.message.bonusMessage }, width - 2);
+            for (int i = 0; i < height - lines.Count; i++)
+            {
+                string msg;
+                if (i < Message.Count)
                 {
-                    sb.Append(gameState.PlayerPos.Symbol);
+                    msg = Message[i];
                 }
                 else
                 {
-                    Enemy enemy = gameState.Enemies.FirstOrDefault(e => e.yPos == i && e.xPos == j);
-                    if (enemy != null)
-                        sb.Append($"\u001b[31m{enemy.Symbol}\u001b[32m");
-                    else
-                        sb.Append(gameState.board[i, j]);
+                    msg = new string(' ', width - 2);
                 }
+                lines.Add("█" + msg + "█");
             }
-            lines.Add(sb.ToString());
-            sb.Clear();
+            lines.Add(new string('█', width));
         }
+        else if (gameState.Mode != InputMode.AttackHandSelection && gameState.Mode != InputMode.Combat)
+        {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < height; i++)
+            {
+                for (int j = 0; j < width; j++)
+                {
+                    if (gameState.PlayerPos.Y == i && gameState.PlayerPos.X == j)
+                    {
+                        sb.Append(gameState.PlayerPos.Symbol);
+                    }
+                    else
+                    {
+                        Enemy enemy = gameState.Enemies.FirstOrDefault(e => e.yPos == i && e.xPos == j);
+                        if (enemy != null)
+                            sb.Append($"\u001b[31m{enemy.Symbol}\u001b[32m");
+                        else
+                            sb.Append(gameState.board[i, j]);
+                    }
+                }
+                lines.Add(sb.ToString());
+                sb.Clear();
+            }
+        }
+        else
+        {
+            Enemy target = gameState.TargetEnemy;
+            lines.Add(new string('█', width));
+            lines.Add($"{"█".PadRight(width - 1)}█");
+            lines.Add($"█{"C O M B A T   M O D E".PadCentre(width - 2)}█");
+            lines.Add($"{"█".PadRight(width - 1)}█");
+            StringBuilder sb = new StringBuilder();
+            List<string> StatStrings = target.GetVisibleStats();
+
+            lines.Add($"{$"█ Name: {target.Name}".PadRight(width - 1)}█");
+            foreach (var entry in StatStrings)
+            {
+                sb.Append("█ ");
+                sb.Append(entry.PadRight(width - 3));
+                sb.Append('█');
+                lines.Add(sb.ToString());
+                sb.Clear();
+            }
+            for (int i = lines.Count; i < height - 6; i++)
+            {
+                lines.Add($"{"█".PadRight(width - 1)}█");
+            }
+            lines.Add($"█{new string('-', width - 2)}█");
+
+            List<string> Message = MakeLines(new List<string>() { gameState.message.bonusMessage }, width - 2);
+            for (int i = 0; i < height - lines.Count; i++)
+            {
+                string msg;
+                if (i < Message.Count)
+                {
+                    msg = Message[i];
+                }
+                else
+                {
+                    msg = new string(' ', width - 2);
+                }
+                lines.Add("█" + msg + "█");
+            }
+            lines.Add(new string('█', width));
+        }
+        
         return lines;
     }
-    private static List<string> MakeRightPannel(List<string> items, Hands hands, int BottleCaps, int GoldBars, int width, int height) 
+    private static List<string> MakeRightPannel(List<string> items, Hands hands, int BottleCaps, int GoldBars, int width, int height)
     {
         List<string> lines = new List<string>();
         lines.Add(new String('=', width));
@@ -198,13 +272,13 @@ public static class Printer
         lines.Add("Inventory".PadCentre(width));
         lines.Add($"Bottle Caps: {BottleCaps}, Gold Bars: {GoldBars}".PadCentre(width));
         int i = 0;
-        for (; i < items.Count; i++) 
+        for (; i < items.Count; i++)
         {
-            lines.Add(($"{i }. " + items[i]).PadRight(width));
+            lines.Add(($"{i}. " + items[i]).PadRight(width));
         }
-        for(; i < 10; i++)
+        for (; i < 10; i++)
         {
-            lines.Add(($"{i }. ").PadRight(width));
+            lines.Add(($"{i}. ").PadRight(width));
         }
         lines.Add(new string('=', width));
         lines.Add("Equipped items".PadCentre(width));

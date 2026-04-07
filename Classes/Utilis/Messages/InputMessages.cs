@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Vault_Scavanger.Classes.Core;
 using Vault_Scavanger.Enums;
 
-namespace Vault_Scavanger.Classes.Utilis;
+namespace Vault_Scavanger.Classes.Utilis.Messages;
 
 public static class InputMessages
 {
@@ -149,7 +149,7 @@ public static class InputMessages
         return $"Item was unequiped from {partName}";
     }
     public static string DrugWasTaken(string name) => $"You have taken {name}";
-    public static string CombatStarted(string prevMsg, string name) => $"{prevMsg} and started a Combat with a {name}";
+    public static string CombatStarted(string prevMsg, string name) => $"{prevMsg} and entered combat with a {name}";
     public static string ItemHasNoUse() => "You can't use this item";
     public static string ExitGame() => "Exiting the game";
     public static string NoFunction() => "This key has no function here";

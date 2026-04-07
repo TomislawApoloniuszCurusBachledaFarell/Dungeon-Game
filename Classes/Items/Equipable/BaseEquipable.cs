@@ -8,7 +8,7 @@ using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
-using Vault_Scavanger.Classes.Utilis;
+using Vault_Scavanger.Classes.Utilis.Messages;
 using Vault_Scavanger.Enums;
 using Vault_Scavanger.Interfaces.CoreInterfaces;
 using Vault_Scavanger.Interfaces.ItemInterfaces;
@@ -129,7 +129,7 @@ public class BaseEquipable : IEquipable
         result.success = true ;
         return result;
     }
-    public virtual int Accept(IAttackType attack, ITarget attacker, ITarget defender)
+    public virtual string Accept(IAttackType attack, ITarget attacker, ITarget defender)
     {
         return attack.Visit(this, attacker, defender);
     }

@@ -14,15 +14,19 @@ public class StatManager
 {
     public Dictionary<StatType, Stats> Stats;
     public List<ActiveEffect> CurrentEffects;
+    public List<ActiveEffect> TickingEffects;
     public StatManager()
     {
         Stats = new Dictionary<StatType, Stats>();
         CurrentEffects = new List<ActiveEffect>();
+        TickingEffects = new List<ActiveEffect>();
     }
-    
+
     public void UpdateStats()
     {
         List<ActiveEffect> ExpiredEffects = new List<ActiveEffect>();
+        List<ActiveEffect> ExpiredTickingEffects = new List<ActiveEffect>();
+
         foreach (ActiveEffect effect in CurrentEffects) 
         {
             if (effect.Duration == 0)
@@ -34,6 +38,30 @@ public class StatManager
         {
             RemoveEffect(effect);
         }
+
+        foreach (ActiveEffect tickEffect in TickingEffects)
+        {
+            if(tickEffect.Duration == 0)
+            {
+                ExpiredTickingEffects.Add(tickEffect);
+            }
+            else
+            {
+                ApplyTickEffect(tickEffect);
+            }
+        }
+        foreach(ActiveEffect tickEffect in ExpiredTickingEffects)
+        {
+            TickingEffects.Remove(tickEffect);
+        }
+    }
+    public void ApplyTickEffect(ActiveEffect tickEffect)
+    {
+        foreach(Effect effect in tickEffect.effects)
+        {
+            ModifyStat(effect.Type, effect.Value);
+        }
+        tickEffect.Duration--;
     }
     public int GetStatValue(StatType type) => Stats[type].Value;
     public void AddMaxStatEffect(Effect effect) => ChangeMaxStat(effect.Type, effect.Value);
@@ -91,39 +119,13 @@ public class StatManager
         CurrentEffects.Remove(source);
     }
 
-
-    public void AddHealth(int health = 100)
+    public void ImplementStat(StatType statType, int maxValue = 10, int value = -1, bool visible = true)
     {
-        Stats.Add(StatType.health, new Stats("Health", health, health));
+        if(value == -1)
+        {
+            value = maxValue / 2;
+        }
+        Stats.Add(statType, new Stats(statType, maxValue, value, visible));
     }
-    public void AddStrength(int maxStrength = 10, int strenght = -1)
-    {
-        if (strenght == -1) strenght = maxStrength / 2;
-        Stats.Add(StatType.strength, new Stats("Strength", maxStrength, strenght));
-    }
-    public void AddPerception(int maxPerception = 10, int perception = -1)
-    {
-        if (perception == -1) perception = maxPerception / 2;
-        Stats.Add(StatType.perception, new Stats("Perception", maxPerception, perception));
-    }
-    public void AddInteligence(int maxInteligence = 10, int inteligence = -1)
-    {
-        if (inteligence == -1) inteligence = maxInteligence / 2;
-        Stats.Add(StatType.inteligence, new Stats("Inteligence", maxInteligence, inteligence));
-    }
-    public void AddAgility(int maxAgility = 10, int Agility = -1)
-    {
-        if (Agility == -1) Agility = maxAgility / 2;
-        Stats.Add(StatType.agility, new Stats("Agility", maxAgility, Agility));
-    }
-    public void AddLuck(int maxLuck = 10, int Luck = -1)
-    {
-        if (Luck == -1) Luck = maxLuck / 2;
-        Stats.Add(StatType.luck, new Stats("Luck", maxLuck, Luck));
-    }
-    public void AddArmour(int maxArmour = 10, int Armour = -1)
-    {
-        if (Armour == -1) Armour = maxArmour / 2;
-        Stats.Add(StatType.armour, new Stats("Armour", maxArmour, Armour));
-    }
+    
 }

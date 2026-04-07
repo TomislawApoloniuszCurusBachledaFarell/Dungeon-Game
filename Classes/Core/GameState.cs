@@ -18,12 +18,13 @@ public class GameState
     public Hands hands { get; set; }
     public int BottleCaps;
     public int GoldBars;
-    public string message;
+    public InputIResult message;
     public InputMode Mode;
     public DropOptions DropOptions;
-    public List<Stats> stats { get; set; }
+    public List<string> stats { get; set; }
     public List<string> Interaction {  get; set; }
     public List<Enemy> Enemies { get;}
+    public Enemy TargetEnemy { get; }
     public class PlayerState
     {
         public int X {  get; set; }
@@ -31,7 +32,7 @@ public class GameState
         public char Symbol { get; set; }
     }
 
-    public GameState(Maze maze, Player player, List<string> Interaction, InputMode mode, string message)
+    public GameState(Maze maze, Player player, List<string> Interaction, InputMode mode, InputIResult inputIResult)
     {
         board = maze.board;
         this.board = board;
@@ -49,14 +50,13 @@ public class GameState
         GoldBars = player.inventory.currency.GoldBars;
         this.Interaction = Interaction;
         Mode = mode;
-        stats = new List<Stats>();
+        this.stats = player.GetVisibleStats();
         Enemies = maze.Enemies;
-        foreach (Stats entry in player.Stats.Stats.Values)
-        {
-            stats.Add(entry);
+        
+        if (mode == InputMode.Combat || mode == InputMode.AttackHandSelection)
+            TargetEnemy = maze.GetEnemyFrom(player.yPos, player.xPos);
 
-        }
-        this.message = message;
+        this.message = inputIResult;
 
     }
 }

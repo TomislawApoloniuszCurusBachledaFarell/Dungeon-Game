@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Vault_Scavanger.Interfaces.CoreInterfaces;
 
 namespace Vault_Scavanger.Classes.Items.Equipable.Weapon.WeaponDecorators;
 
@@ -14,4 +15,5 @@ public class RustyDecorator : WeaponDecorator
     public override string Name => $"Rusty {base.Name}";
     public override int Value => (int)(base.Value * (0.5));
     public override int Damage => Math.Max(1,(int)( base.Damage - (0.33) * base.Damage));
+
 }

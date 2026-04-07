@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
-using Vault_Scavanger.Classes.Utilis;
+using Vault_Scavanger.Classes.Utilis.Messages;
 
 namespace Vault_Scavanger.Classes.Items.Drug;
 

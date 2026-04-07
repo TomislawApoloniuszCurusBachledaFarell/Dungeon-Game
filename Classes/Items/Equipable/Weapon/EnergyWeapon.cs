@@ -3,17 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-namespace Vault_Scavanger.Classes.Items.Equipable.Weapon;
-
-using Maze_Mania.Interfaces;
-using Vault_Scavanger.Classes.Utilis;
 using Vault_Scavanger.Interfaces.CoreInterfaces;
 
-public class MeleeWeapon : Weapon
-{
+namespace Vault_Scavanger.Classes.Items.Equipable.Weapon;
 
-    public MeleeWeapon(string name, char symbol, int value, bool twoHanded, int damage)
-        : base(name, symbol, value, twoHanded, damage)
+public class EnergyWeapon : Weapon
+{
+    public EnergyWeapon(string name, char symbol, int value, bool twoHanded, int damage)
+    : base(name, symbol, value, twoHanded, damage)
     {
 
     }

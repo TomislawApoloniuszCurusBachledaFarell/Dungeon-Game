@@ -17,7 +17,7 @@ public class GameLoop
     public Player player { get; set; }
     public Maze maze { get; set; }
     public bool isRunning { get; set; }
-    private string? inputMessage = "";
+    private InputIResult latestResult = new InputIResult() { resultMessage = "" };
     public InputMode inputMode = InputMode.Normal;
     private int? tempItemIndex = null;
     public Features GameFeatures = Features.None;
@@ -56,8 +56,9 @@ public class GameLoop
     private bool ReadInput(ConsoleKeyInfo key)
     {
         InputIResult result = inputHandler.HandleInput(key.Key, player, maze, KeyBindings, ref inputMode, ref tempItemIndex);
-        inputMessage = result.resultMessage + ".";
-
+        result.resultMessage = result.resultMessage + ".";
+        result.bonusMessage = result.bonusMessage + ".";
+        latestResult = result;
         return result.success;
     }
 
@@ -68,7 +69,8 @@ public class GameLoop
             player.UpdatePlayer();
         }
         List<string>? Interaction = findInteractions();
-        GameState state = new GameState(maze, player, Interaction, inputMode, inputMessage);
+
+        GameState state = new GameState(maze, player, Interaction, inputMode, latestResult);
         return state;
     }
 

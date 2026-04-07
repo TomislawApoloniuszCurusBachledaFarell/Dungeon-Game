@@ -11,8 +11,8 @@ public static class AttackTypeManager
 {
     public static List<IAttackType> AttackTypes = new List<IAttackType>()
     {
-        new MeleeAttack(),
-        new RangedAttack(),
+        new TorsoAttack(),
+      //  new RangedAttack(),
     };
 
     public static IAttackType GetAttack(int index)

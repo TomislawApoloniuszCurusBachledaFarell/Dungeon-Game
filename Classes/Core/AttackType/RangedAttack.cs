@@ -8,7 +8,7 @@ using Vault_Scavanger.Classes.Items.Equipable.Weapon;
 using Vault_Scavanger.Interfaces.CoreInterfaces;
 
 namespace Vault_Scavanger.Classes.Core.AttackType;
-
+/*
 public class RangedAttack : IAttackType
 {
     public string Name { get => "Ranged Attack"; }
@@ -17,7 +17,7 @@ public class RangedAttack : IAttackType
         return 100;
     }
 
-    public int Visit(RangedWeapon weapon, ITarget attacker, ITarget defender)
+    public int Visit(FirearmWeapon weapon, ITarget attacker, ITarget defender)
     {
         return 100;
     }
@@ -27,3 +27,4 @@ public class RangedAttack : IAttackType
         return 100;
     }
 }
+*/

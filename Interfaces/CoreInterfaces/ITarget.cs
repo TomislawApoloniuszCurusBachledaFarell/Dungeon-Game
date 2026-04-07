@@ -11,5 +11,6 @@ namespace Vault_Scavanger.Interfaces.CoreInterfaces;
 public interface ITarget
 {
     public StatManager Stats { get; set; }
-    
+    public string Name { get; }
+    public void TakeDamage(int dmg);
 }

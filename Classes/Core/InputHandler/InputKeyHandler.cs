@@ -11,6 +11,7 @@ using Maze_Mania.Classes.Utilis;
 using Vault_Scavanger.Classes.Core;
 using Vault_Scavanger.Classes.Core.InputHandler.ModeActions.NormalModeCOR;
 using Vault_Scavanger.Classes.Core.InputHandler.ModeHandlers;
+using Vault_Scavanger.Classes.Core.InputHandler;
 
 namespace Maze_Mania.Classes.Core.KeyHandlers;
 
@@ -21,6 +22,7 @@ public class InputHandler
 
         [InputMode.Normal] = new MovementAction(),
         [InputMode.Combat] = new CombatHandler(),
+        [InputMode.PlayerDeath] = new PlayerDeathHandler(),
         [InputMode.AttackHandSelection] = new AttackHandSelectionHandler(),
         [InputMode.Drop] = new DropSelectionHandler(),
         [InputMode.Equip] = new EquipSelectionHandler(),

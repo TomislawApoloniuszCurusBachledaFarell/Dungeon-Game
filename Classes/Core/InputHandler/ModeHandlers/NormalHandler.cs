@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Vault_Scavanger.Classes.Utilis;
+using Vault_Scavanger.Classes.Utilis.Messages;
 
 namespace Vault_Scavanger.Classes.Core.InputHandler.ModeHandlers;
 

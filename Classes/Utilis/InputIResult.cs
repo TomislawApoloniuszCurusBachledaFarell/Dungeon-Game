@@ -10,4 +10,5 @@ public class InputIResult
 {
     public bool success {  get; set; }
     public string? resultMessage { get; set; }
+    public string? bonusMessage { get; set; }
 }

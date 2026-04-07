@@ -14,11 +14,12 @@ public static class WeaponFactory
 {
     public static BaseEquipable CreateRandomWeapon(Random rand)
     {
-        int variant = rand.Next(3);
+        int variant = rand.Next(4);
         Weapon result = variant switch
         {
-            0 => new RangedWeapon("BB Gun", 'g', 36, true, 4),
-            1 => new RangedWeapon("10mm Pistol", '¬', 250, false, 22),
+            0 => new FirearmWeapon("BB Gun", 'g', 36, true, 4),
+            1 => new FirearmWeapon("10mm Pistol", '¬', 250, false, 22),
+            2 => new EnergyWeapon("Laser Pistol", 'l', 175, false, 12),
             _ => new MeleeWeapon("Rolling Pin", 'R', 10, false, 3),
         };
 

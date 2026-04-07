@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Vault_Scavanger.Classes.Core;
 using Vault_Scavanger.Enums;
 
-namespace Vault_Scavanger.Classes.Utilis;
+namespace Vault_Scavanger.Classes.Utilis.Messages;
 
 public class InteractionMessages
 {
@@ -38,7 +38,7 @@ public class InteractionMessages
     {
         return $"Press {keys.GetActionKey(GameActions.Drop)} to drop an item";
     }
-    public string SelectAttackType(char key, string name) => $"Press {key} to make perform {name}";
+    public string SelectAttackType(char key, string name) => $"Press {key} to {name}";
     public string SelectItemMessage(char key, string name, InputMode mode) 
     {
         string interaction = "";

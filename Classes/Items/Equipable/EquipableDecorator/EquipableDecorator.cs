@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Vault_Scavanger.Classes.Utilis;
 using Vault_Scavanger.Enums;
+using Vault_Scavanger.Interfaces.CoreInterfaces;
 
 namespace Vault_Scavanger.Classes.Items.Equipable.EquipableDecorator;
 
@@ -31,5 +32,10 @@ public class EquipableDecorator : BaseEquipable
     public override InputIResult Unequip(Player player, BodyParts bodyPart)
     {
         return base.Unequip(player, bodyPart);
+    }
+
+    public override string Accept(IAttackType attack, ITarget attacker, ITarget defender)
+    {
+        return baseEquipable.Accept(attack, attacker, defender);
     }
 }

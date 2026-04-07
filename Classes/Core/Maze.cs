@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Vault_Scavanger.Classes.Core;
 using Vault_Scavanger.Classes.Core.VaultBuilder;
-using Vault_Scavanger.Classes.Utilis;
+using Vault_Scavanger.Classes.Utilis.Messages;
 
 namespace Maze_Mania.Classes.Core;
 

@@ -13,5 +13,6 @@ public enum InputMode {
     HandSelection,
     HandUnequipSelection,
     AttackHandSelection,
+    PlayerDeath,
     Combat
 }
