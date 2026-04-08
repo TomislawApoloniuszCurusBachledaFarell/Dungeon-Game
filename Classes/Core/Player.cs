@@ -33,13 +33,13 @@ public class Player : ITarget
 
     private void setUpStats()
     {
-        Stats.ImplementStat(StatType.health, 100, 100);
+        Stats.ImplementStat(StatType.health, 200, 200);
         Stats.ImplementStat(StatType.strength);
         Stats.ImplementStat(StatType.perception);
         Stats.ImplementStat(StatType.inteligence);
         Stats.ImplementStat(StatType.agility);
         Stats.ImplementStat(StatType.luck);
-        Stats.ImplementStat(StatType.baseDmg, 2, 2, false);
+        Stats.ImplementStat(StatType.baseDmg, 20, 2, false);
         Stats.ImplementStat(StatType.armour, 100, 2, false);
     }
     public void setPos(int xPos, int yPos)

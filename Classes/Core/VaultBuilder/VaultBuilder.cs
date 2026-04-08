@@ -52,7 +52,7 @@ public class VaultBuilder
             new AddCentralRoom(8, 15),
 
             new AddRooms(15, 4, 7),
-            new AddEnemies(2),
+            new AddEnemies(4),
             new AddCorridors(14),
             new AddItems(12, 20),
             new AddCurrencies(5)

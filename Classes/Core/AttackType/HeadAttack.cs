@@ -1,5 +1,4 @@
-﻿using Maze_Mania.Classes.Core;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,56 +11,54 @@ using Vault_Scavanger.Enums;
 using Vault_Scavanger.Interfaces.CoreInterfaces;
 
 namespace Vault_Scavanger.Classes.Core.AttackType;
-
-public class TorsoAttack : IAttackType
+public class HeadAttack : IAttackType
 {
-    public string Name { get => "target enemy's torso"; }
+    public string Name { get => "target enemy's head"; }
     public string Visit(MeleeWeapon weapon, ITarget attacker, ITarget defender)
     {
-        int dmg = weapon.Damage;
+        int dmg = (int)(1.5 * weapon.Damage);
         int arm = defender.Stats.GetStatValue(StatType.armour);
 
-        int ALck = attacker.Stats.GetStatValue(StatType.luck);
+        int AInt = attacker.Stats.GetStatValue(StatType.inteligence);
         int AStr = attacker.Stats.GetStatValue(StatType.strength);
         int DStr = defender.Stats.GetStatValue(StatType.strength);
-        int DLck = defender.Stats.GetStatValue(StatType.luck);
+        int DAgl = defender.Stats.GetStatValue(StatType.agility);
 
-        int CriticalChance = (int)(ALck * 5 - ALck * 2.5);
+        int WhiffChance = (int)(6 * DAgl - 2 * AInt);
+        int BleedChance = (int)(AStr * 6 - DStr * 2);
 
-        int StunChance = (int)(ALck * 5 - DLck * 2.5);
-        int RicochetChance = arm - dmg;
         string result;
         Random rand = new Random();
 
-        if (rand.Next(100) < CriticalChance)
+        if (rand.Next(100) < WhiffChance)
         {
-            dmg = (int)(1.25 * dmg);
-            dmg = Math.Max(0, dmg - arm);
+            dmg = 0;
 
-            result = CombatMessage.CriticalStrike(attacker.Name, dmg);
+            result = CombatMessage.DodgedAttack(attacker.Name);
         }
         else
         {
             dmg = Math.Max(0, dmg - arm);
 
             result = CombatMessage.NormalAttack(attacker.Name, dmg);
-        }
-        if (rand.Next(100) < StunChance)
-        {
-            int agilityDebuff = 4;
-            StatType statDebuffed = StatType.agility;
-            defender.Stats.AddEffect(new List<Effect>() { Effect.GetNegativeEffect(statDebuffed, agilityDebuff) },
-                "MeleeStun", 3);
+            if (rand.Next(100) < BleedChance)
+            {
+                int healthDebuff = Math.Max(1, (AStr + dmg)/5);
+                StatType statDebuffed = StatType.health;
+                defender.Stats.AddTickEffect(new List<Effect>() { Effect.GetNegativeEffect(statDebuffed, healthDebuff) },
+                    "Bleed", 5);
 
-            result = result + ". " + CombatMessage.TargetStunned(attacker.Name, statDebuffed, agilityDebuff);
+                result = result + ". " + CombatMessage.TargetBleeding();
+            }
         }
+
 
         defender.TakeDamage(dmg);
         return result;
     }
     public string Visit(FirearmWeapon weapon, ITarget attacker, ITarget defender)
     {
-        int dmg = weapon.Damage;
+        int dmg = 2 * weapon.Damage;
         int arm = defender.Stats.GetStatValue(StatType.armour);
 
         int ALck = attacker.Stats.GetStatValue(StatType.luck);
@@ -69,9 +66,8 @@ public class TorsoAttack : IAttackType
         int DAgl = defender.Stats.GetStatValue(StatType.agility);
         int DLck = defender.Stats.GetStatValue(StatType.luck);
 
-        int MissChance = (int)(DAgl * 5 - APer * 2.5);
-        int PunctureChance = (int)(ALck * 5 - DLck * 2.5);
-        int RicochetChance = arm - dmg;
+        int MissChance = (int)((DAgl+DAgl) * 5 - (APer + ALck) * 2.5);
+        int RicochetChance = arm/2 - dmg;
         string result;
         Random rand = new Random();
 
@@ -83,39 +79,31 @@ public class TorsoAttack : IAttackType
         else if (rand.Next(100) < RicochetChance)
         {
             dmg = 0;
-            int armourReduction = (int)Math.Ceiling(arm * 0.05);
+            int armourReduction = (int)Math.Ceiling(arm * 0.1);
             defender.Stats.ModifyStat(StatType.armour, (-1) * armourReduction);
 
             result = CombatMessage.RicochetShot(attacker.Name, armourReduction);
         }
-        else if (rand.Next(100) < PunctureChance)
-        {
-            dmg = (int)(1.25 * dmg);
-            int armourReduction = (int)Math.Ceiling(arm * 0.2);
-            defender.Stats.ModifyStat(StatType.armour, (-1) * armourReduction);
-            result = CombatMessage.PuncturedShot(attacker.Name, dmg, armourReduction);
-        }
         else
         {
             dmg = Math.Max(0, dmg - arm);
-            result = CombatMessage.NormalAttack(attacker.Name, dmg);
+            result = CombatMessage.Headshot(attacker.Name, dmg);
         }
-       
         defender.TakeDamage(dmg);
         return result;
     }
     public string Visit(EnergyWeapon weapon, ITarget attacker, ITarget defender)
     {
-        int dmg = weapon.Damage;
-        int arm = defender.Stats.GetStatValue(StatType.armour);
+        int dmg =(int)(weapon.Damage * 1.75);
 
         int ALck = attacker.Stats.GetStatValue(StatType.luck);
         int AInt = attacker.Stats.GetStatValue(StatType.inteligence);
         int DPer = defender.Stats.GetStatValue(StatType.perception);
+        int DInt = defender.Stats.GetStatValue(StatType.inteligence);
         int DLck = defender.Stats.GetStatValue(StatType.luck);
 
-        int MissChance = (int)(DPer * 5 - AInt * 2.5);
-        int MeltChance = (int)(ALck * 5 - DLck * 2.5);
+        int MissChance = (int)((DPer + DInt) * 5 - AInt * 2.5);
+        int SynnapseBurnChance = (int)(ALck * 5 - DLck * 2.5);
         string result;
         Random rand = new Random();
         if (rand.Next(100) < MissChance)
@@ -123,48 +111,43 @@ public class TorsoAttack : IAttackType
             dmg = 0;
             result = CombatMessage.MissedShot(attacker.Name);
         }
-        else if (rand.Next(100) < MeltChance)
-        {
-            int targetHP = defender.Stats.GetStatMaxValue(StatType.health);
-            dmg += (int)(0.25 * (AInt * 0.1) * targetHP);
-
-            result = CombatMessage.MeltCrit(attacker.Name, dmg);
-        }
         else
         {
             result = CombatMessage.EnergyAttack(attacker.Name, dmg);
-        }
+            if (rand.Next(100) < SynnapseBurnChance)
+            {
+                StatType NerfedStat1 = StatType.inteligence;
+                StatType NerfedStat2 = StatType.luck;
+                int nerfVal = 3;
 
+                defender.Stats.AddEffect(new List<Effect>() { Effect.GetNegativeEffect(NerfedStat1, nerfVal),
+                Effect.GetNegativeEffect(NerfedStat2, nerfVal)},
+                    "SynnapseBurnt", 3);
+                result = $"{result}. {CombatMessage.MeltCrit(attacker.Name, dmg)}";
+            }
+        }
         defender.TakeDamage(dmg);
         return result;
     }
     public string Visit(BaseEquipable weapon, ITarget attacker, ITarget defender)
     {
-        int dmg = attacker.Stats.GetStatValue(StatType.baseDmg);
+        int dmg =(int)(attacker.Stats.GetStatValue(StatType.baseDmg) * 1.5);
         int arm = defender.Stats.GetStatValue(StatType.armour);
 
-        int ALck = attacker.Stats.GetStatValue(StatType.luck);
+        int AAgl = attacker.Stats.GetStatValue(StatType.agility);
         int AStr = attacker.Stats.GetStatValue(StatType.strength);
         int DStr = defender.Stats.GetStatValue(StatType.strength);
-        int DLck = defender.Stats.GetStatValue(StatType.luck);
+        int DInt = defender.Stats.GetStatValue(StatType.inteligence);
 
-        int CritChance = (int)(ALck * 5 - DLck * 2.5);
-        int BlockChance = (int)(DStr * 5 - AStr * 2.5);
+        int BlockChance = (int)((DStr + DInt) * 5 - (AStr + AAgl) * 2.5);
         string result;
         Random rand = new Random();
 
-        if (rand.Next(100) < CritChance)
+        if (rand.Next(100) < BlockChance)
         {
-            dmg = (int)(dmg * 1.25);
+            dmg = (int)(dmg * 0.125);
             dmg = Math.Max(0, dmg - arm);
-            
-            result = CombatMessage.CriticalStrike(attacker.Name, dmg);
-        }
-        else if (rand.Next(100) < BlockChance)
-        {
-            dmg = (int)(dmg * 0.5);
-            dmg = Math.Max(0, dmg - arm);
-            
+
             result = CombatMessage.BlockedAnAttack(attacker.Name, defender.Name, dmg);
         }
         else

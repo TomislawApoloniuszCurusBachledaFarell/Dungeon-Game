@@ -57,6 +57,9 @@ public class CombatHandler : IModeHandler
             return result;
         }
 
+        player.UpdatePlayer();
+        maze.UpdateEnemies();
+
         result = ResolveCombatPlayer(player, enemy, attackType, handIndex);
         if (!enemy.IsAlive())
         {

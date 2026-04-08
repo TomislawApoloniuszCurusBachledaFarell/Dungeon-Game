@@ -26,8 +26,24 @@ public static class CombatMessage
         $"{attackerName} dealt {dmg} damage and punctured target's armour reducing it by {armourReduction}";
     public static string TargetStunned(string attackerName, StatType type, int reduction) =>
         $"{attackerName} stunned the target reducing its {Stats.GetStatTypeName(type)} by {reduction}";
-    public static string MeltCrit(string attackerNme, int dmg) =>
-        $"{attackerNme} performed a critical hit melting target's defence dealing {dmg} damage";
-    public static string EnergyAttack(string attackerNme, int dmg) =>
-        $"{attackerNme} dealt {dmg} damage with an energy weapon bypassing amour";
+    public static string MeltCrit(string attackerName, int dmg) =>
+        $"{attackerName} performed a critical hit melting target's defence dealing {dmg} damage";
+    public static string EnergyAttack(string attackerName, int dmg) =>
+        $"{attackerName} dealt {dmg} damage with an energy weapon bypassing amour";
+    public static string EmpoweredNextAttack(string attackerNme, int dmg) =>
+        $"Next attack of will be empowered";
+    public static string CripplingAttack(string attackerName, int dmg, StatType type, int reduction) =>
+        $"{attackerName} crippled the target reducing its {Stats.GetStatTypeName(type)} by {reduction}";
+    public static string DodgedAttack(string attackerName) =>
+        $"{attackerName} attacked but the target dodge, no damage was dealt";
+    public static string BrokenAttack(StatType type, int reduction) =>
+        $"Target's arm was broken reducing its {Stats.GetStatTypeName(type)} by {reduction}";
+    public static string BurnAttack() =>
+        $"Target was set on fire";
+    public static string TargetBleeding() =>
+        $"Target is bleeding";
+    public static string SynnapsesBurt(StatType type1, StatType type2) =>
+        $"Target's synnapses were burnt reducing its {type1} and {type2}";
+    public static string Headshot(string attackerName, int dmg) =>
+        $"{attackerName} hit a headshot dealing {dmg} damage";
 }

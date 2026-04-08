@@ -53,7 +53,7 @@ public class GameState
         this.stats = player.GetVisibleStats();
         Enemies = maze.Enemies;
         
-        if (mode == InputMode.Combat || mode == InputMode.AttackHandSelection)
+        if (mode == InputMode.Combat || mode == InputMode.AttackHandSelection || mode == InputMode.PlayerDeath)
             TargetEnemy = maze.GetEnemyFrom(player.yPos, player.xPos);
 
         this.message = inputIResult;

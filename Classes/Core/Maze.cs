@@ -233,6 +233,13 @@ public class Maze
         return null;
     }
 
+    public void UpdateEnemies()
+    {
+        foreach (Enemy enemy in Enemies)
+        {
+            enemy.Stats.UpdateStats();
+        }
+    }
     public void KillEnemy(Enemy enemy)
     {
         Enemies.Remove(enemy);

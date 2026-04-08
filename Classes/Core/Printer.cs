@@ -170,33 +170,8 @@ public static class Printer
         List<string> lines = new List<string>();
         int height = gameState.board.GetLength(0);
         int width = gameState.board.GetLength(1);
-        if(gameState.Mode == InputMode.PlayerDeath)
-        {
-            lines.Add(new string('█', width));
-
-            for (int i = lines.Count; i < height - 6; i++)
-            {
-                lines.Add($"{"█".PadRight(width - 1)}█");
-            }
-            lines.Add($"█{new string('-', width - 2)}█");
-
-            List<string> Message = MakeLines(new List<string>() { gameState.message.bonusMessage }, width - 2);
-            for (int i = 0; i < height - lines.Count; i++)
-            {
-                string msg;
-                if (i < Message.Count)
-                {
-                    msg = Message[i];
-                }
-                else
-                {
-                    msg = new string(' ', width - 2);
-                }
-                lines.Add("█" + msg + "█");
-            }
-            lines.Add(new string('█', width));
-        }
-        else if (gameState.Mode != InputMode.AttackHandSelection && gameState.Mode != InputMode.Combat)
+        
+         if (gameState.Mode != InputMode.AttackHandSelection && gameState.Mode != InputMode.Combat && gameState.Mode != InputMode.PlayerDeath)
         {
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < height; i++)
@@ -225,7 +200,14 @@ public static class Printer
             Enemy target = gameState.TargetEnemy;
             lines.Add(new string('█', width));
             lines.Add($"{"█".PadRight(width - 1)}█");
-            lines.Add($"█{"C O M B A T   M O D E".PadCentre(width - 2)}█");
+            if (gameState.Mode == InputMode.PlayerDeath)
+            {
+                lines.Add($"█{"Y O U   D I E D".PadCentre(width - 2)}█");
+            }
+            else
+            {
+                lines.Add($"█{"C O M B A T   M O D E".PadCentre(width - 2)}█");
+            }
             lines.Add($"{"█".PadRight(width - 1)}█");
             StringBuilder sb = new StringBuilder();
             List<string> StatStrings = target.GetVisibleStats();
@@ -239,7 +221,7 @@ public static class Printer
                 lines.Add(sb.ToString());
                 sb.Clear();
             }
-            for (int i = lines.Count; i < height - 6; i++)
+            for (int i = lines.Count; i < height/2 + 2; i++)
             {
                 lines.Add($"{"█".PadRight(width - 1)}█");
             }
@@ -309,9 +291,12 @@ public static class Printer
         
         StringBuilder sb = new StringBuilder();
         List<string> Message = MakeLines(new List<string>() { message }, boardWidth - 2);
-        lines.Add("|" + new string(' ', boardWidth - 2) + "|");
-
-        for (int i = 0; i < height - 1; i++)
+        if (Message.Count < height) 
+        {
+            lines.Add("|" + new string(' ', boardWidth - 2) + "|");
+            
+        }
+        for (int i = 0; i < Math.Max(Message.Count, height) ; i++)
         {
             string msg;
             if (i < Message.Count)

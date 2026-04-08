@@ -11,4 +11,7 @@ public class ActiveEffect
     public List<Effect> effects;
     public int Duration;
     public string category;
+
+    public static ActiveEffect GetActiveEffect(List<Effect> effects, string category, int duration) =>
+        new ActiveEffect { effects = effects, Duration = duration, category = category };
 }

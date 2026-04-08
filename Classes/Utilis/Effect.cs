@@ -17,8 +17,8 @@ public class Effect
         return new Effect { Type = type, Value = value };
     }
 
-    public static Effect GetNegativeEffect(StatType type, int value = -2)
+    public static Effect GetNegativeEffect(StatType type, int value = 2)
     {
-        return new Effect { Type = type, Value = value };
+        return new Effect { Type = type, Value = (-1) * value };
     }
 }

@@ -67,6 +67,8 @@ public class GameLoop
         if(inputMode == InputMode.Normal)
         {
             player.UpdatePlayer();
+            maze.UpdateEnemies();
+
         }
         List<string>? Interaction = findInteractions();
 

@@ -63,6 +63,7 @@ public class StatManager
         }
         tickEffect.Duration--;
     }
+    public int GetStatMaxValue(StatType type) => Stats[type].MaxValue;
     public int GetStatValue(StatType type) => Stats[type].Value;
     public void AddMaxStatEffect(Effect effect) => ChangeMaxStat(effect.Type, effect.Value);
     public void CancelMaxStatEffect(Effect effect)
@@ -77,6 +78,18 @@ public class StatManager
     public void ModifyStat(StatType type, int val)
     {
         Stats[type].Value += val;
+    }
+    public void AddTickEffect(List<Effect> effects, string category, int duration)
+    {
+        foreach (ActiveEffect tickEffect in TickingEffects)
+        {
+            if (tickEffect.category == category)
+            {
+                tickEffect.Duration = duration;
+                return;
+            }
+        }
+        TickingEffects.Add(new ActiveEffect { effects = effects, Duration = duration, category = category });
     }
     public void AddEffect(List<Effect> effects, string category, int duration)
     {
